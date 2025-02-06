@@ -254,7 +254,7 @@ jekyll-archives:
     tag: "/blog/tag/:name/"
     category: "/blog/category/:name/"
 
-display_tags: ["leadership", "software-engineering"] # these tags will be displayed on the front page of your blog
+display_tags: ["leadership", "software-engineering", "ai", "productivity", "talks", "elixir"] # these tags will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar

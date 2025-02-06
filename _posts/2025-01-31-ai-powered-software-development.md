@@ -3,7 +3,7 @@ layout: post
 title: "AI-Powered Software Development: A Short Guide to Your 10X Productivity"
 date: 2025-01-31
 author: "Ihor Katkov & Sofiia Yurkevska"
-tags: [AI, software development, productivity]
+tags: [AI, software-engineering, productivity]
 ---
 
 The software development industry is at a critical juncture in AI adoption. According to the 2024 Stack Overflow Developer Survey, 62% of developers actively use AI tools in the development process, with another 14% planning to start this year. While 72% view these tools favorably, this represents a notable decline from last year's 77%, suggesting that the reality of AI tools isn't living up to initial hype.

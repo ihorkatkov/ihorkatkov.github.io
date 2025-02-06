@@ -2,7 +2,7 @@
 layout: post
 title: "Craft effective API with GraphQL and Absinthe"
 date: 2018-03-23
-tags: [elixir, graphql, api, slideshare, video]
+tags: [elixir, graphql, api, slideshare, video, talks]
 ---
 
 Check out my old meetup talk from Kyiv Elixir Meetup. 
