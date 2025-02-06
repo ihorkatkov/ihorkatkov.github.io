@@ -8,8 +8,9 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Fractional CTO | Team Leader | High-performing trading solutions builder
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
+  Personal site of Ihor Katkov. He is an expirienced entrepreneur, tech lead 
+  and known as high-performing trading systems builder and investor. 
+keywords: Tech Lead | Entrepreneur | High-performing trading solutions builder
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
