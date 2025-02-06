@@ -1,5 +1,6 @@
 ---
 layout: post
+author: Ihor Katkov & Sofiia Yurkevska
 title: "Unlocking Growth: The Power of Strategic Software Migration"
 date: 2024-08-23
 tags: [software-engineering, leadership]
