@@ -1,0 +1,8 @@
+github_users:
+  - ihorkatkov
+
+repo_description_lines_max: 2
+
+github_repos:
+  - ihorkatkov/leaky
+  - bytewitchcraft/apollo-absinthe-upload-link
