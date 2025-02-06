@@ -8,8 +8,10 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Personal site of Ihor Katkov. He is an expirienced entrepreneur, tech lead 
-  and known as high-performing trading systems builder and investor. 
+  Ihor Katkov’s personal site. Ihor is an experienced entrepreneur, tech lead,
+  and investor, recognized for his expertise in building high-performance trading systems.
+  He possesses a strong combination of business acumen, strategic vision, technical proficiency,
+  and exceptional leadership skills. 
 keywords: Tech Lead | Entrepreneur | High-performing trading solutions builder
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
