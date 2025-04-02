@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "From Skeptic to AI Believer: How I Became a Dev Evangelist"
+title: "From Skeptic to Believer: My Journey with the Stdlib Approach and AI Agents"
 date: 2025-04-01
 author: "Ihor Katkov"
 tags: [AI, software-engineering, productivity]
