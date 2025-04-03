@@ -8,7 +8,7 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Ihor Katkov’s personal site. Ihor is an experienced entrepreneur, tech lead,
+  Ihor Katkov's personal site. Ihor is an experienced entrepreneur, tech lead,
   and investor, recognized for his expertise in building high-performance trading systems.
   He possesses a strong combination of business acumen, strategic vision, technical proficiency,
   and exceptional leadership skills. 
@@ -219,6 +219,10 @@ defaults:
       path: "assets"
     values:
       sitemap: false
+  - scope:
+      path: ""
+    values:
+      sitemap: true
 
 sass:
   style: compressed
