@@ -2,7 +2,7 @@
 layout: research
 title: "Negotiating Your First CTO Compensation Package in Europe"
 description: "A comprehensive guide to negotiating executive compensation for technology leaders, with focus on European markets including the Netherlands and Cyprus."
-date: 2025-01-31
+date: 2025-06-19
 categories: [deep-research]
 tags: [CTO, compensation, negotiation, Europe, startup, tech-leadership, executive-pay, career-development]
 author: "Ihor Katkov"
