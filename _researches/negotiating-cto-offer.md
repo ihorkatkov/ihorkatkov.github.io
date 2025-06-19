@@ -11,7 +11,7 @@ toc: true
 research_type: "comprehensive-guide"
 ---
 
-Link to a podcast: https://notebooklm.google.com/notebook/ea818788-3474-471b-be20-d9df47e33af0/audio
+[Listen to a podcast](https://notebooklm.google.com/notebook/ea818788-3474-471b-be20-d9df47e33af0/audio)
 
 # Negotiating Your First CTO Compensation Package in Europe
 
