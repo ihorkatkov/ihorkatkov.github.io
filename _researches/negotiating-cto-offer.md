@@ -11,6 +11,8 @@ toc: true
 research_type: "comprehensive-guide"
 ---
 
+Link to a podcast: https://notebooklm.google.com/notebook/ea818788-3474-471b-be20-d9df47e33af0/audio
+
 # Negotiating Your First CTO Compensation Package in Europe
 
 Breaking into a CTO role - especially as a first-timer - means not only technical leadership, but also negotiating a compensation package that reflects your value and the market. This practical guide walks you through every stage of the negotiation lifecycle - from early prep to post-deal management - with a focus on EU nuances (notably in the Netherlands and Cyprus). We'll cover how to benchmark and evaluate offers, craft negotiation strategies, manage the psychology and politics around the table, and even provide checklists and template scripts for your use. Let's dive in.
