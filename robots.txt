@@ -4,4 +4,4 @@ permalink: /robots.txt
 User-agent: *
 Disallow:
 
-Sitemap: https://ihorkatkov.github.io/sitemap.xml
+Sitemap: https://www.ihorkatkov.com/sitemap.xml
