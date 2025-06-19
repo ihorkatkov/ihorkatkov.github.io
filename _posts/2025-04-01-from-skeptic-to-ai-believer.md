@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "From Skeptic to Believer: My Journey with the Stdlib Approach and AI Agents"
+title: "From Skeptic to Believer: My Journey with the stdlib approach and AI agents"
 date: 2025-04-01
 author: "Ihor Katkov"
 tags: [AI, software-engineering, productivity]

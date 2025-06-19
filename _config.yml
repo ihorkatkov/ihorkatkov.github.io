@@ -141,13 +141,14 @@ newsletter:
 
 collections:
   news:
-    defaults:
-      layout: post
     output: true
     permalink: /:collection/:title/
   projects:
     output: true
     permalink: /:collection/:title/
+  researches:
+    output: true
+    permalink: /researches/:title/
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -167,7 +168,7 @@ kramdown:
       start_line: 1
 
 # Includes & excludes
-include: ["_pages", "_scripts"]
+include: ["_pages", "_scripts", "_researches"]
 exclude:
   - bin/
   - CONTRIBUTING.md

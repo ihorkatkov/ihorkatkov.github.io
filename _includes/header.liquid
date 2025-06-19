@@ -59,7 +59,8 @@
           <!-- Other pages -->
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}
           {% for p in sorted_pages %}
-            {% if p.nav and p.autogen == null and p.title == 'blog' %}
+            {% assign allowed_pages = 'blog,researches' | split: ',' %}
+            {% if p.nav and p.autogen == null and allowed_pages contains p.title %}
               {% if p.dropdown %}
                 {% assign has_active_child = false %}
                 {% for child in p.children %}

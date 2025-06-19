@@ -1,0 +1,57 @@
+{% comment %}
+  Research Card Component
+  Usage: {% include research_card.liquid research=research_post %}
+{% endcomment %}
+
+{% assign read_time = include.research.content | number_of_words | divided_by: 180 | plus: 1 %}
+
+<article class="research-card">
+  <div class="research-header">
+    <h2><a href="{{ include.research.url | relative_url }}">{{ include.research.title }}</a></h2>
+    <div class="research-meta">
+      <span class="research-date">
+        <i class="fa-solid fa-calendar fa-sm"></i>
+        {{ include.research.date | date: '%B %d, %Y' }}
+      </span>
+      {% if include.research.reading_time %}
+        <span class="reading-time">
+          <i class="fa-solid fa-clock fa-sm"></i>
+          {{ include.research.reading_time }} min read
+        </span>
+      {% else %}
+        <span class="reading-time">
+          <i class="fa-solid fa-clock fa-sm"></i>
+          {{ read_time }} min read
+        </span>
+      {% endif %}
+      {% if include.research.research_type %}
+        <span class="research-type">
+          <i class="fa-solid fa-microscope fa-sm"></i>
+          {{ include.research.research_type | replace: "-", " " | capitalize }}
+        </span>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="research-content">
+    <p class="research-description">{{ include.research.description | strip_html | truncate: 250 }}</p>
+    
+    {% if include.research.tags and include.research.tags.size > 0 %}
+      <div class="research-tags">
+        {% for tag in include.research.tags limit: 5 %}
+          <span class="tag">{{ tag }}</span>
+        {% endfor %}
+        {% if include.research.tags.size > 5 %}
+          <span class="tag more-tags">+{{ include.research.tags.size | minus: 5 }} more</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+  
+  <div class="research-footer">
+    <a href="{{ include.research.url | relative_url }}" class="read-more">
+      <i class="fa-solid fa-arrow-right fa-sm"></i>
+      Read Full Research
+    </a>
+  </div>
+</article> 

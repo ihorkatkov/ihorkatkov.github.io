@@ -1,0 +1,129 @@
+---
+layout: post
+---
+
+<style>
+.research-metadata {
+  background: var(--global-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.research-metadata h4 {
+  margin: 0 0 1rem 0;
+  color: var(--global-theme-color);
+  font-size: 1.1rem;
+}
+
+.research-metadata .meta-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+
+.research-metadata .meta-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.research-metadata .meta-label {
+  font-weight: 600;
+  color: var(--global-text-color);
+}
+
+.research-metadata .meta-value {
+  color: var(--global-text-color-light);
+}
+
+.research-nav {
+  background: var(--global-theme-color);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.research-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.research-nav a:hover {
+  text-decoration: underline;
+}
+
+.research-tags-section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--global-divider-color);
+}
+
+.research-tags-section h4 {
+  margin: 0 0 1rem 0;
+  color: var(--global-theme-color);
+}
+
+.research-tag {
+  background: var(--global-theme-color);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+</style>
+
+<div class="research-nav">
+  <a href="/researches/">← Back to Researches</a>
+</div>
+
+<div class="research-metadata">
+  <h4>📊 Research Details</h4>
+  
+  <div class="meta-item">
+    <span class="meta-label">Research Type:</span>
+    <span class="meta-value">{{ page.research_type | default: "In-depth Analysis" | capitalize }}</span>
+  </div>
+  
+  <div class="meta-item">
+    <span class="meta-label">Reading Time:</span>
+    <span class="meta-value">{{ page.reading_time | default: "Unknown" }} minutes</span>
+  </div>
+  
+  <div class="meta-item">
+    <span class="meta-label">Published:</span>
+    <span class="meta-value">{{ page.date | date: '%B %d, %Y' }}</span>
+  </div>
+  
+  {% if page.author %}
+  <div class="meta-item">
+    <span class="meta-label">Author:</span>
+    <span class="meta-value">{{ page.author }}</span>
+  </div>
+  {% endif %}
+</div>
+
+{{ content }}
+
+{% if page.tags and page.tags.size > 0 %}
+<div class="research-tags-section">
+  <h4>🏷️ Research Tags</h4>
+  {% for tag in page.tags %}
+    <span class="research-tag">{{ tag }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="research-nav">
+  <a href="/researches/">← Back to Researches</a>
+</div> 
