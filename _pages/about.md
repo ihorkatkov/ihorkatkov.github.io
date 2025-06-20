@@ -23,6 +23,11 @@ latest_posts:
   enabled: true
   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 5 # leave blank to include all the blog posts
+
+latest_researches:
+  enabled: true
+  scrollable: true # adds a vertical scroll bar if there are more than 3 research items
+  limit: 5 # leave blank to include all the researches
 ---
 
 As a Technical Lead with nearly a decade of experience in software engineering, I specialize in building resilient, scalable, and high-performing systems for trading and financial services. My journey has taken me from hands-on coding to leading cross-functional teams, where I’ve tackled complex infrastructure challenges and driven innovation at the intersection of finance and tech.

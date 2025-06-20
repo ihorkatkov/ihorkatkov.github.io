@@ -56,6 +56,14 @@ layout: default
       {% include latest_posts.liquid %}
     {% endif %}
 
+    <!-- Latest researches -->
+    {% if page.latest_researches and page.latest_researches.enabled %}
+      <h2>
+        <a href="{{ '/deep-researches/' | relative_url }}" style="color: inherit">latest researches</a>
+      </h2>
+      {% include latest_researches.liquid %}
+    {% endif %}
+
     <!-- Selected papers -->
     {% if page.selected_papers %}
       <h2>
