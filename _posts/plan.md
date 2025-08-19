@@ -3,6 +3,9 @@ Title: Running GenServers in a Distributed Cluster — Article Plan
 Goal
 - Teach engineers when a distributed GenServer architecture is warranted and how to implement it safely and consistently, building on the testing (2024‑11‑01) and performance/observability (2025‑07‑21) articles.
 
+Scope
+- Focus strictly on Elixir/GenServer specifics for distributed operation. Assume familiarity with general distributed systems concepts (consistency, partitions, retries).
+
 Audience & Prerequisites
 - Elixir engineers who have built and tested single‑node GenServers and understand performance basics.
 - Familiarity with concepts from the previous two articles: thin GenServers, non‑blocking callbacks, Telemetry, and testing strategies.
@@ -28,10 +31,10 @@ Quick Start — Start Here If...
 - You need coordinated leadership (exactly one scheduler of X) across nodes → consider a guarded global singleton (with fences and health checks).
 - You need node‑local CPU/I/O locality with simple stateless work → per‑node worker pools.
 
-Decision Tree & Thresholds (to include as flowchart in article)
-- If single‑node memory > 60–70% of limit or CPU > 70% sustained and hot keys exist → shard by key.
-- If writes require cross‑entity coordination and strict ordering → avoid naïve distribution; consider central coordinator or transactional outbox/sagas.
-- If per‑key concurrency > cores on a single node or > 1k req/s per key group → shard by key range/consistent hash.
+Decision Tips (Elixir‑centric)
+- If hot keys overload a single mailbox despite callback hygiene → shard by key using `:erlang.phash2/2` or a ring.
+- If you truly need “exactly one” coordinator across nodes → guarded global registration (`:global`, `syn`, or `Horde`) with health checks.
+- Prefer per‑node worker pools for locality; keep work stateless or reconstructible.
 
 Core Mental Model (How it changes in a cluster)
 - Nodes communicate over the network; per‑sender message order is preserved, but latency and failures are normal.
@@ -41,9 +44,9 @@ Core Mental Model (How it changes in a cluster)
 Architecture Patterns (How)
 1) Sharded GenServers (recommended default for keyed workloads)
    - Route messages by a stable shard key using consistent hashing.
-   - Use `Registry` + `DynamicSupervisor` per node; optionally add a global registry.
+   - Use `Registry` + `DynamicSupervisor` per node; name shards via `{:via, Registry, {RegistryName, shard_key}}`.
    - Prefer sticky routing to minimize state movement; rebuild state on crash from a source of truth.
-   - Libraries: `libcluster` for node discovery; optionally `Horde` for cross‑cluster registries/supervision.
+   - Libraries: `libcluster` for node discovery; `Registry` for local names; optional `Horde` for cross‑node.
 
 2) Global Singleton (use sparingly)
    - One process in the whole cluster for coordination/locks.
@@ -54,12 +57,10 @@ Architecture Patterns (How)
    - Each node manages its own workers for locality (e.g., CPU‑bound tasks, I/O near caches).
    - A router distributes work across nodes; keep workers stateless or reconstructible.
 
-Migration Strategy (from single node to cluster)
-- Gradual enablement: introduce a router and keep existing GenServer as the only shard; then add more shards.
-- Dual‑write/dual‑read windows for stateful servers: write to both old and new shards, read‑prefer new; verify metrics before cutover.
-- Zero‑downtime: drain via readiness gates; stop routing new keys to old node; hand off remaining keys by rebuild on target.
-- Rollback: retain the old single‑node path behind a feature flag; ensure idempotent ops and replay capability from durable log.
-- Data migration: snapshot + change‑data‑capture replay; or event‑sourced rebuild per key.
+Migration Strategy (simple)
+- Add a router in front of the existing GenServer; start with 1 shard, then increase shard count.
+- For stateful servers, rebuild state on target shard at start (`handle_continue`) and switch traffic gradually.
+- Rollback by routing all keys back to the original shard via a feature flag.
 
 State Strategies
 - Ephemeral state with rebuild: Rehydrate from DB/event log on start; simplest and safest.
@@ -72,26 +73,22 @@ Consistency, Failure, and Back‑Pressure
 - Define netsplit behavior (reject writes, buffer, or accept with reconciliation).
 - Bound mailboxes and enforce timeouts; prefer async patterns and retries with jitter.
 
-Data Consistency Patterns (cross‑shard)
-- Sagas with compensating actions for multi‑entity workflows.
-- Transactional outbox/inbox to bridge DB and messaging reliably.
-- Two‑phase commit (rare; only where absolutely necessary and bounded), with clear timeouts and failure paths.
-- Cross‑shard idempotency keys to de‑duplicate retries.
+Data Consistency (practical BEAM notes)
+- Prefer idempotent commands and per‑key sequencing; add idempotency keys where retries may duplicate work.
+- If bridging DB and messaging, a transactional outbox can keep producers simple; avoid heavy protocols in GenServers.
 
 Observability Across the Cluster
 - Emit Telemetry with `node()` and shard identifiers; aggregate per node and per shard.
 - Trace cross‑node calls (OpenTelemetry) to attribute latency.
 - Dashboards: message_queue_len per shard, restarts/rebalances, node churn, SLOs (p95 callback times).
 
-Monitoring & Alerting Cookbook
-- Alert when `message_queue_len` p95 per shard > 50 for 5m; p99 callback duration > 20ms; restarts > 3/hour per shard.
-- SLI/SLO examples: 99% of `handle_call` duration < 10ms; 99.9% routing latency < 5ms intra‑node, < 20ms cross‑node.
-- Sample dashboards: per‑node CPU/mem, shard heatmap, error budgets, netsplit occurrences, handoff duration.
+Monitoring Tips (Elixir‑centric)
+- Track `:telemetry` events with `node()` and `shard` tags; alert on mailbox growth and callback duration.
 
-Operations & Security
-- Cluster formation: `libcluster` strategies (Kubernetes DNS, gossip). Node naming conventions.
-- Distribution security: cookies management, network policies/firewalls; consider TLS distribution if required.
-- Rolling deploys and state safety: drain/hand‑off strategies, readiness gates.
+Operations & Security (OTP specifics)
+- Cluster formation with `libcluster` (DNS/gossip); consistent node names per environment.
+- Manage cookies securely; restrict ports; TLS distribution only if required by environment.
+- Draining: pause routing, let shards finish, then stop; rebuild state on start.
 
 Security Deep‑Dive
 - Node authentication beyond cookies (TLS distribution, mTLS between nodes, cookie rotation).
@@ -103,10 +100,9 @@ Testing Strategies (build on prior article)
 - Fault injection: kill nodes, simulate netsplits, validate idempotency and recovery.
 - Contract tests for routers and shard selection; property tests for routing stability.
 
-Testing Enhancements
-- Chaos engineering drills: periodic process kills, node churn, artificial latency and packet loss.
-- Load testing distributed paths with per‑key traffic models and skewed key distributions.
-- Comprehensive netsplit scenarios: partition A|B, asymmetric loss, and prolonged split with reconciliation checks.
+Minimal Distributed Testing
+- Spin up peers with `:peer` or `Node.spawn_link/2`; assert routing invariants and state rebuild behavior.
+- Inject simple failures: kill a shard process, restart, and verify idempotency.
 
 Step‑By‑Step Recipes (to include with concise code in the article)
 - Recipe 1: Form a cluster with `libcluster` in a release (Kubernetes example) and verify node membership.
@@ -117,11 +113,10 @@ Step‑By‑Step Recipes (to include with concise code in the article)
 - Recipe 4: Durable checkpointing and recovery flow (snapshot + replay) with idempotent commands.
 - Recipe 5: Cluster‑wide observability with PromEx/Grafana and tracing correlation.
 
-Enhanced Recipes
-- Recipe 0: “Should I distribute?” decision worksheet and scorecard.
-- Gradual migration with dual‑write/verify/cutover/rollback.
-- Handling cluster membership changes: rebalancing shards and draining safely.
-- Cross‑region deployments: latency budgets, quorum choices, and read locality.
+Keep It Simple (what we’ll show)
+- `libcluster` config, `Registry` naming via `{:via, Registry, …}`.
+- Simple shard router using `:erlang.phash2/2`.
+- Optional global registration example with `:global` or `Horde` and trade‑offs.
 
 Anti‑Patterns to Call Out
 - Synchronous cross‑node `GenServer.call/3` in hot paths.
@@ -135,22 +130,18 @@ Troubleshooting & Debugging
 - Regression patterns: increased tail latency from cross‑node fan‑out, shard hotspotting after hash change.
 
 Article Outline (ToC)
-1. Motivation and mental model of distribution
-2. Quick Start: Start here if… (decision cheatsheet + flowchart)
-3. Common pitfalls to know before distributing
-4. Decision framework: When you need a cluster (with thresholds)
-5. Architecture patterns (shards, singleton, per‑node workers)
-6. Migration strategy from single node
-7. State strategies and data consistency (idempotency, sagas, 2PC caveats)
-8. Failure modes, netsplits, and back‑pressure
-9. Observability and SLOs in a cluster (cookbook)
-10. Operations & security (deep‑dive)
-11. Capacity planning and sizing
-12. Recipes with code
-13. Troubleshooting & debugging
-14. Case studies (do’s and don’ts)
-15. Cost analysis and when not to distribute
-16. Checklist and takeaways
+1. Goals and scope (Elixir/GenServer specifics only)
+2. Quick start decision tips
+3. OTP distribution mental model (what changes for GenServers)
+4. Patterns: sharded, global singleton (when unavoidable), per‑node workers
+5. Simple migration path
+6. State and consistency (idempotency, rebuild on start)
+7. Failure handling and back‑pressure
+8. Observability essentials (Telemetry with node/shard)
+9. Ops basics: libcluster, cookies, draining
+10. Recipes
+11. Troubleshooting
+12. Checklist and takeaways
 
 Cross‑References to Prior Articles
 - Reuse thin‑server design and callback isolation for distributed paths.
@@ -160,19 +151,13 @@ Cross‑References to Prior Articles
 Deliverable
 - A practical, opinionated guide with copy‑pasteable recipes and a final checklist engineers can apply to migrate from single‑node GenServers to a resilient clustered deployment.
 
-Real‑World Case Studies (to prepare)
-- Sharded user session managers for consumer apps with hotspot keys; routing by user_id to reduce cross‑node chatter.
-- Global scheduler singleton for low‑throughput maintenance jobs with strict sequencing.
-- Per‑node ingestion workers for log processing where locality and throughput trump global ordering.
+Real‑World Examples (brief)
+- Sharded user session managers (route by `user_id`).
+- Global scheduler for low‑throughput maintenance tasks.
+- Per‑node ingestion workers for locality‑sensitive pipelines.
 
-Capacity Planning Guidance
-- Shard count heuristic: 8–16× number of cores cluster‑wide; allow rebalancing headroom.
-- Node sizing: prefer more smaller nodes for failure blast‑radius; ensure memory for peak queues + ETS buffers.
-- Scale up vs. out: add nodes when per‑node CPU > 70% sustained and p95 callback time degrades despite local optimizations.
-
-Alternative Patterns
-- When to choose GenStage/Broadway for back‑pressure pipelines.
-- Event sourcing with distributed GenServers for rebuildable state and clearer recovery.
-- External coordination (Redis, etcd, Postgres advisory locks) vs. pure Erlang distribution—trade‑offs and when to mix.
+Alternative Patterns (brief pointers)
+- When to choose GenStage/Broadway for pipeline/back‑pressure needs.
+- External coordination (Redis, Postgres advisory locks) when global ordering/locks are simpler externally.
 
 
