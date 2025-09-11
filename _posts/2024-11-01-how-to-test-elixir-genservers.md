@@ -7,11 +7,14 @@ tags: [elixir, testing, software-engineering]
 author: Ihor Katkov & Sofiia Yurkevska
 ---
 
+Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
+Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)
+
 The GenServer is a powerful abstraction for managing stateful processes and harnessing concurrency when working with Elixir. Often, not only newcomers but also experienced engineers are struggling with GenServer testing. In this article, we'll dive into ideas on how to properly design and test GenServers.
 
 ## Do you really need it?
 > “Simple things should be simple, and complex things should be possible.”
-> 
+>
 > — Rich Hickey
 
 GenServer (Generic Server) is one of the core building blocks in Elixir applications, implementing the actor model for concurrent state management. It gives us a notion of when GenServers shine:
@@ -36,7 +39,7 @@ defmodule CounterServer do
   def init(initial_count), do: {:ok, initial_count}
 
   def increment, do: GenServer.call(__MODULE__, :increment)
-  
+
   def handle_call(:increment, _from, count) do
     {:reply, count + 1, count + 1}
   end
@@ -61,12 +64,12 @@ end
 
 ## Why Proper Design Matters:
 > If you can’t test it, it’s bad design.
-> 
+>
 > — Kent Beck
 
 One of the first principles to keep in mind when working with GenServers is the importance of design. With proper design, testing GenServers becomes at least possible and at most easier while the overall complexity of an application decreases.
 
-Common design flaws: 
+Common design flaws:
 
 ### Business Logic overload
 The GenServer should act primarily as a coordinator, passing off complex business logic to external modules. By keeping GenServers thin, you can make testing easier, as the business logic can be tested independently of the process. Let's examine a common anti-pattern where business logic is directly embedded in the GenServer:
@@ -82,18 +85,18 @@ defmodule OrderProcessor do
     total = calculate_total(validated_order)
     updated_inventory = update_inventory(validated_order)
     receipt = generate_receipt(validated_order, total)
-    
+
     {:reply, receipt, Map.put(state, :inventory, updated_inventory)}
   end
-  
+
   # Many private functions implementing business logic...
 end
 ```
-This implementation violates key principles of business logic separation. First, it creates testing complexity – business logic is trapped inside process management, each test requires process overhead, it's hard to test business rules in isolation, and difficult to simulate different business scenarios. 
+This implementation violates key principles of business logic separation. First, it creates testing complexity – business logic is trapped inside process management, each test requires process overhead, it's hard to test business rules in isolation, and difficult to simulate different business scenarios.
 
-Second, it introduces maintainability issues – business rules are mixed with infrastructure concerns, changes to business logic risk affecting process stability, it's hard to adapt as business rules evolve, and difficult to reuse logic across different interfaces. 
+Second, it introduces maintainability issues – business rules are mixed with infrastructure concerns, changes to business logic risk affecting process stability, it's hard to adapt as business rules evolve, and difficult to reuse logic across different interfaces.
 
-Third, there's context confusion – there's no clear separation between business and infrastructure layers, business rules become tied to process lifecycle, it's hard to implement new interfaces like API or CLI, and difficult to maintain consistent authorization. 
+Third, there's context confusion – there's no clear separation between business and infrastructure layers, business rules become tied to process lifecycle, it's hard to implement new interfaces like API or CLI, and difficult to maintain consistent authorization.
 
 Here's a better approach that separates process management from business logic:
 
@@ -101,7 +104,7 @@ Here's a better approach that separates process management from business logic:
 ```elixir
 defmodule OrderProcessor do
   use GenServer
-  
+
   def handle_call({:process_order, order}, _from, state) do
     # GenServer only coordinates the process
     {:ok, receipt, updated_inventory} = OrderService.process_order(order, state)
@@ -213,7 +216,7 @@ end
 ```
 
 ## Conclusion
-What have we learned about working with GenServers? 
+What have we learned about working with GenServers?
 
 First, not every problem needs a GenServer. Simple structs and functions are often enough – avoid the process management overhead unless you really need that persistent state or coordination between processes.
 
@@ -222,7 +225,3 @@ Second, when you do need a GenServer, keep it thin. Let it coordinate processes 
 Finally, testing well-designed GenServers doesn't have to be hard. Test simple state transitions by calling callbacks directly. Use proper contracts and dependency injection for more complex cases involving external services – either through configuration or runtime.
 
 The bottom line? If testing feels difficult, your GenServer might be doing too much. Let that guide you toward better design decisions.
-
-
-Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
-Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)

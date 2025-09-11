@@ -9,6 +9,9 @@ author: Ihor Katkov & Sofiia Yurkevska
 
 In my various roles, I've hired and worked with many Elixir developers. I've also seen many companies struggle with hiring Elixir developers. In this post, I'll share my experience and insights into hiring engineers in general and Elixir developers in particular. The article was written in collaboration with [Freshcode](https://freshcode.com)
 
+Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
+Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)
+
 # BEAM and Team: Your Playbook for Hiring Elixir Developers
 
 Finding the right talent can make or break your company’s digital initiatives. This guide offers strategic insights into hiring the best developers for those considering **Elixir** for their next project.
@@ -19,10 +22,10 @@ Finding the right talent can make or break your company’s digital initiatives.
 
 Before diving into the hiring process, aligning your technical strategy with your overall business goals is crucial. Elixir, known for its scalability and fault tolerance, is particularly well-suited for:
 
-- Building highly concurrent and distributed systems  
-- Developing real-time applications with low latency  
-- Handling large volumes of data efficiently  
-- Implementing real-time systems  
+- Building highly concurrent and distributed systems
+- Developing real-time applications with low latency
+- Handling large volumes of data efficiently
+- Implementing real-time systems
 
 To illustrate how these capabilities translate to real-world scenarios, consider this brief case study.
 
@@ -62,18 +65,18 @@ It’s worth noting that while Elixir offers significant benefits, the talent po
 
 When building your Elixir team, look beyond just technical skills. The ideal candidate brings a combination of technical prowess, problem-solving abilities, and the right mindset. Here’s what to prioritize in your search:
 
-1. **Engineering and Growth Mindset**  
+1. **Engineering and Growth Mindset**
    Look for problem-solving skills, analytical thinking, and a solid technical foundation. These traits often indicate the ability to tackle complex challenges. A growth mindset suggests a willingness to learn and adapt.
 
-2. **Functional Programming Experience**  
+2. **Functional Programming Experience**
    While direct Elixir experience is valuable, don’t overlook candidates with backgrounds in other functional programming languages (e.g., Haskell, Clojure, Lisp). If they can explain monads, hire them. If they can explain monads in a way that makes sense, they’re probably wizards!
 
-3. **Specific Technical Skills**  
-   - Experience with OTP for building distributed systems.  
-   - Familiarity with Phoenix and LiveView (part of the PETAL stack) for web projects.  
+3. **Specific Technical Skills**
+   - Experience with OTP for building distributed systems.
+   - Familiarity with Phoenix and LiveView (part of the PETAL stack) for web projects.
    - Tailor technical requirements to your specific goals.
 
-4. **GitHub Presence**  
+4. **GitHub Presence**
    A candidate’s GitHub profile can reveal coding style, quality of work, and passion for programming. Look for active contributions to open-source projects, especially those related to Elixir or functional programming.
 
 Remember: **mindset often trumps specific language experience**. Be prepared to invest in training promising candidates with strong fundamentals.
@@ -84,20 +87,20 @@ Remember: **mindset often trumps specific language experience**. Be prepared to 
 
 Finding top-tier Elixir developers requires a multi-faceted approach. Given the relatively niche nature of Elixir, traditional hiring methods may fall short. Here’s a roadmap:
 
-1. **Start Where Elixir Developers Congregate**  
-   - [ElixirForum](https://elixirforum.com)  
-   - [ElixirJobs](https://elixirjobs.net)  
+1. **Start Where Elixir Developers Congregate**
+   - [ElixirForum](https://elixirforum.com)
+   - [ElixirJobs](https://elixirjobs.net)
    - LinkedIn, with targeted searches and networking strategies.
 
-2. **Tap Into Personal Networks**  
+2. **Tap Into Personal Networks**
    Encourage your current engineering team to reach out to their networks. An employee referral program can sweeten the deal.
 
-3. **Build a Community Presence**  
-   - Host or sponsor Elixir conferences and meetups.  
-   - Contribute to Elixir open-source projects.  
+3. **Build a Community Presence**
+   - Host or sponsor Elixir conferences and meetups.
+   - Contribute to Elixir open-source projects.
    - Engage with the Elixir community to become a recognized supporter.
 
-4. **Consider Agencies—With Caution**  
+4. **Consider Agencies—With Caution**
    Specialized agencies can be helpful, but be wary of resume flooding. Ensure any agency understands your requirements, culture, and Elixir’s nuances.
 
 ---
@@ -121,30 +124,30 @@ The first Elixir hire is often the most challenging and sets the foundation for 
 
 After confirming they can code, check if they can align with your team and stakeholders:
 
-- **Evaluate Commitment to Growth**  
-  - Past contributions to open-source Elixir projects.  
-  - Recent Elixir features or libraries they’ve learned.  
+- **Evaluate Commitment to Growth**
+  - Past contributions to open-source Elixir projects.
+  - Recent Elixir features or libraries they’ve learned.
   - Methods for staying updated in the Elixir ecosystem.
 
-- **Trial Day**  
-  - Offer a day (paid) for the candidate to work on small, real tasks with your team.  
+- **Trial Day**
+  - Offer a day (paid) for the candidate to work on small, real tasks with your team.
   - Helps gauge cultural fit and teamwork style.
 
 **Freshcode Tip**: Leverage your in-house expertise if you have Elixir veterans:
 
-- Have them review the candidate’s code.  
-- Include them in technical interviews.  
+- Have them review the candidate’s code.
+- Include them in technical interviews.
 - Assess the candidate’s grasp of OTP, concurrency models, and essential Elixir libraries.
 
 ---
 
 ## Common Pitfalls to Avoid
 
-- Overemphasizing Elixir-specific experience at the expense of general programming skills.  
-- Neglecting soft skills and cultural fit.  
-- Conducting inadequate technical evaluations.  
-- Overlooking remote talent in a distributed world.  
-- Skimping on onboarding and mentoring.  
+- Overemphasizing Elixir-specific experience at the expense of general programming skills.
+- Neglecting soft skills and cultural fit.
+- Conducting inadequate technical evaluations.
+- Overlooking remote talent in a distributed world.
+- Skimping on onboarding and mentoring.
 - Forgetting about community engagement (Elixir enthusiasts often come in packs!).
 
 ---
@@ -153,23 +156,23 @@ After confirming they can code, check if they can align with your team and stake
 
 Once you’ve successfully hired Elixir developers, a solid onboarding process is key. Here’s how to do it right:
 
-1. **Facilitate Quick Code Contributions**  
-   - Have new hires make their first commit within the first week.  
+1. **Facilitate Quick Code Contributions**
+   - Have new hires make their first commit within the first week.
    - Boosts confidence and motivation, and gives you immediate feedback on their performance.
 
-2. **Implement a “Test Day” Approach**  
-   - A paid day where the candidate tackles small, real tasks in your environment.  
+2. **Implement a “Test Day” Approach**
+   - A paid day where the candidate tackles small, real tasks in your environment.
    - Lets both parties gauge fit and collaboration style.
 
-3. **Establish a Robust Mentorship Program**  
-   - Assign each new Elixir developer a dedicated mentor.  
-   - Guide them through your coding practices, workflows, and codebase intricacies.  
+3. **Establish a Robust Mentorship Program**
+   - Assign each new Elixir developer a dedicated mentor.
+   - Guide them through your coding practices, workflows, and codebase intricacies.
    - Schedule regular check-ins and milestones.
 
-4. **Create a Comprehensive Onboarding Plan**  
-   - Roadmap of tasks and projects over the first few months.  
-   - Scheduled intros to teams and stakeholders.  
-   - Training on your specific tech stack and tools.  
+4. **Create a Comprehensive Onboarding Plan**
+   - Roadmap of tasks and projects over the first few months.
+   - Scheduled intros to teams and stakeholders.
+   - Training on your specific tech stack and tools.
    - Regular feedback sessions to address challenges or questions.
 
 ---
@@ -177,6 +180,3 @@ Once you’ve successfully hired Elixir developers, a solid onboarding process i
 ## Final Words
 
 Hiring Elixir developers requires a strategic approach that balances technical skills, cultural fit, and business objectives. By following these guidelines and considering all available options, including strategic outsourcing partnerships, you can build a high-performing Elixir team that drives your business forward.
-
-Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
-Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)

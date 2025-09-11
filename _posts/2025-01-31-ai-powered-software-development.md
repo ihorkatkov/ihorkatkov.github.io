@@ -6,6 +6,9 @@ author: "Ihor Katkov & Sofiia Yurkevska"
 tags: [AI, software-engineering, productivity]
 ---
 
+Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
+Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)
+
 The software development industry is at a critical juncture in AI adoption. According to the 2024 Stack Overflow Developer Survey, 62% of developers actively use AI tools in the development process, with another 14% planning to start this year. While 72% view these tools favorably, this represents a notable decline from last year's 77%, suggesting that the reality of AI tools isn't living up to initial hype.
 
 The data paints a nuanced picture. While 81% of developers cite increased productivity as the primary benefit, trust remains a significant concern. Only 43% feel confident about AI output accuracy, and 45% of professional developers rate AI tools as poor at handling complex tasks. The challenges aren't primarily about user error—professionals are twice as likely to cite lack of trust or understanding of AI-generated code as their main obstacle compared to insufficient training.
@@ -14,10 +17,10 @@ The data paints a nuanced picture. While 81% of developers cite increased produc
 
 ## Common Misconceptions
 
-1. **AI isn't a replacement for human expertise:**  
+1. **AI isn't a replacement for human expertise:**
    While 82% of AI tool users employ them for code writing, developers remain skeptical about AI's ability to handle complex tasks like testing, where only 46% express interest in AI adoption.
 
-2. **The productivity gains aren't automatic:**  
+2. **The productivity gains aren't automatic:**
    The top challenges cited by professionals aren't about learning to use the tools, but about trust and understanding the generated code's implications for their codebase.
 
 ---
@@ -27,13 +30,13 @@ The data paints a nuanced picture. While 81% of developers cite increased produc
 ### 1. Planning and Ideation with AI
 Before diving into code, LLMs can significantly enhance your planning process by serving as an intelligent sounding board. Here's how:
 
-- **Requirements Analysis:**  
+- **Requirements Analysis:**
    Ask the AI to identify potential edge cases, highlight technical constraints, suggest questions for unclear requirements, and list dependencies.
 
-- **Architecture Exploration:**  
+- **Architecture Exploration:**
    Use AI to discuss the pros and cons of different technical solutions, explore scalability concerns, identify integration points, and validate architectural decisions.
 
-- **Implementation Planning:**  
+- **Implementation Planning:**
    Break down the work into manageable pieces, create a step-by-step implementation plan, outline test scenarios, and define clear acceptance criteria.
 
 The goal during this phase isn't to get the AI to make decisions for you but to leverage its pattern recognition capabilities to ensure you've considered all angles before starting implementation.
@@ -77,11 +80,11 @@ Following this principle, here are specific tactics that yield better results:
 <summary>Example .cursorrules file</summary>
 
 {% highlight text %}
-Act as an expert senior Elixir engineer. You will work with a stack that includes Elixir, Phoenix, Docker, PostgreSQL, Tailwind CSS, Sobelow, Credo, Ecto, ExUnit, Plug, Phoenix LiveView, Phoenix LiveDashboard, Gettext, Jason, Swoosh, Finch, DNS Cluster, File System Watcher, Release Please, and ExCoveralls. 
+Act as an expert senior Elixir engineer. You will work with a stack that includes Elixir, Phoenix, Docker, PostgreSQL, Tailwind CSS, Sobelow, Credo, Ecto, ExUnit, Plug, Phoenix LiveView, Phoenix LiveDashboard, Gettext, Jason, Swoosh, Finch, DNS Cluster, File System Watcher, Release Please, and ExCoveralls.
 
-When writing code, first thoroughly consider any considerations or requirements to ensure all aspects are covered. Then, proceed to write the code only after this detailed reasoning. 
+When writing code, first thoroughly consider any considerations or requirements to ensure all aspects are covered. Then, proceed to write the code only after this detailed reasoning.
 
-After completing a response, provide three follow-up questions as if I am asking you. Format these as **Q1**, **Q2**, and **Q3**. These should be thought-provoking questions that delve deeper into the original topic. 
+After completing a response, provide three follow-up questions as if I am asking you. Format these as **Q1**, **Q2**, and **Q3**. These should be thought-provoking questions that delve deeper into the original topic.
 
 If my response begins with "VV", provide the most succinct, concise, and shortest answer possible.
 
@@ -100,7 +103,7 @@ Reason through the problem considering factors such as [factors].
 **Q2:** What potential impacts should be considered regarding [another concern]?
 **Q3:** What are alternative methods to achieve [aspect]?
 
-(Example should be adapted to realistic scenarios in your domain using the stack you have) 
+(Example should be adapted to realistic scenarios in your domain using the stack you have)
 
 Use clear, direct language and ensure responses align with the latest updates in technology and practices to maintain relevance. Be brutally honest!
 {% endhighlight %}
@@ -117,8 +120,5 @@ Use clear, direct language and ensure responses align with the latest updates in
 
 For further resources:
 
-- [OpenAI Playground](https://platform.openai.com/playground/chat)  
+- [OpenAI Playground](https://platform.openai.com/playground/chat)
 - [OpenAI's Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
-
-Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
-Originally posted in collaboration with [Freshcode](https://www.freshcodeit.com/blog/strategic-software-migration-reasons-risks-best-practices)

@@ -4,11 +4,14 @@ title: "You Built a GenServer. Now Make It Fast, Observable, and Bulletproof."
 date: 2025-07-20
 categories: [Elixir, Performance]
 tags: [elixir, genserver, performance, observability, resilience, software-engineering]
-author: "Ihor Katkov"
+author: "Ihor Katkov & Sofiia Yurkevska"
 draft: true
 ---
 
 ## Introduction
+
+Co-authored with [Sofiia Yurkevska](https://www.linkedin.com/in/s-yurkevska/) |
+Originally posted on [Freshcode](https://www.freshcodeit.com/blog/youve-built-a-genserver-now-make-it-fast-observable-and-bulletproof)
 
 Remember the last time you shipped a shiny new GenServer to production? It passed every unit test, handled your happy-path demo traffic, and looked rock-solid on paper. Then real users showed up. Latency spikes, CPU climbs, and suddenly the BEAM scheduler view in `:observer` looks like a Christmas tree. I've been there - and I've learned that **building a GenServer is the easy part**; making it *fast, observable, and bulletproof* is where the real work starts.
 
@@ -184,7 +187,7 @@ key = :erlang.phash2(customer_id, 16)
 {:ok, pid} = MyShardSupervisor.start_child(key)
 ```
 
-Or reach for libraries like [`hash_ring`](https://github.com/g-andrade/hash_ring). 
+Or reach for libraries like [`hash_ring`](https://github.com/g-andrade/hash_ring).
 ---
 
 ## 3. Observability & Instrumentation
@@ -224,4 +227,4 @@ Next up in this series: **distributed GenServers and cluster-wide coordination**
 *   Official OTP docs - [`gen_server`](https://www.erlang.org/doc/man/gen_server.html), [`:erlang.process_info/2`](https://www.erlang.org/doc/man/erlang.html#process_info-2).
 *   Fred Hébert - *“Adopting Erlang/OTP”* chapters on monitoring.
 *   Saša Jurić - *“Elixir in Action”* sections on performance.
-*   Erlang Solutions - *“Designing for Scalability with Erlang/OTP”*. 
+*   Erlang Solutions - *“Designing for Scalability with Erlang/OTP”*.
