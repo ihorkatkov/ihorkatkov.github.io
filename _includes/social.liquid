@@ -8,5 +8,7 @@
       <a href="https://www.linkedin.com/in/{{ social[1] }}" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
     {% when 'telegram_username' %}
       <a href="https://telegram.me/{{ social[1] }}" title="telegram"><i class="fa-brands fa-telegram"></i></a>
+    {% when 'x_username' %}
+      <a href="https://x.com/{{ social[1] }}" title="X"><i class="fa-brands fa-x-twitter"></i></a>
   {% endcase %}
 {% endfor %}
