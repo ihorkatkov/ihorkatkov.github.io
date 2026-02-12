@@ -8,7 +8,7 @@ tags: [AI, health, automation, openclaw]
 
 ## Introduction
 
-For two years, I paid $30/month for a Whoop subscription. Every morning, I'd check my recovery score, read the sleep analysis, and get workout recommendations based on my HRV and resting heart rate. It was genuinely useful — until I realized I was paying for an interpretation layer on top of data my Apple Watch already collects.
+For two years, I paid $30/month for a Whoop subscription. Every morning, I'd check my recovery score, read the sleep analysis, and get workout recommendations based on my HRV and resting heart rate. It worked — until I realized I was paying for an interpretation layer on top of data my Apple Watch already collects.
 
 The hardware wasn't the value. The value was the morning briefing: "Your recovery is 76%, you had good REM sleep, today is a good day for intensity." That contextual coaching that tells you not just what happened, but what to do about it.
 
@@ -231,7 +231,7 @@ If you don't have Whoop history, just track Apple Watch data for 2 weeks and ask
 
 ### Step 4: Morning Briefing (The Core)
 
-This is where the system comes alive. Every morning at 7:30 AM, the agent reads my latest health data, compares it with my baselines, checks my calendar, and gives me a recovery score + workout recommendation.
+Every morning at 7:30 AM, the agent reads my latest health data, compares it with my baselines, checks my calendar, and gives me a recovery score + workout recommendation.
 
 In OpenClaw, I configured a cron job. Here's the prompt I use:
 
@@ -311,7 +311,7 @@ You have 3 meetings left today — worth dropping one?
 Essentialism: less, but better.
 ```
 
-I canceled one of the meetings. My HRV recovered within an hour. That's actionable coaching.
+I canceled one of the meetings. My HRV recovered within an hour. Worth it.
 
 ### Step 6: Calendar-Aware Workout Suggestions
 
@@ -351,7 +351,7 @@ That Wednesday was the learning moment. The agent was right — my body was alre
 **1. Baselines are everything**
 Generic thresholds are useless. "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needed MY numbers to give useful advice.
 
-**2. Calendar integration is the killer feature**
+**2. Calendar integration makes the difference**
 Whoop didn't know my schedule. My agent does. That's why it can say "train at 14:00" instead of just "today is a good day to train."
 
 **3. Silence is golden**
@@ -439,15 +439,13 @@ Add data from gym equipment, running watch, whatever. More data, better coaching
 
 ## Final Thoughts
 
-Building this system taught me something about AI agents: they're most powerful when they know your context. Generic tools give generic advice. Personalized systems — with your baselines, your calendar, your goals — give coaching that actually works.
+Generic tools give generic advice. An agent that knows your baselines, your calendar, and your training preferences gives you something specific. "Train at 14:00, strength, 45 minutes, you have dinner at 19:00 so wrap up by 15:30." That's not a dashboard. That's useful.
 
-This isn't just about saving $360/year. It's about building tools that fit your life, not adapting your life to fit the tools.
+I control the whole system. I can adjust baselines, rewrite prompts, add features. Whoop was a black box. This is a white box.
 
-The best part? I control the system. I can adjust the baselines, tweak the prompts, add new features. Whoop gave me a black box. I built a white box.
+$5 for the Health Auto Export app. An hour of setup. That's the total cost.
 
-If you're already using OpenClaw (or considering it), this is a great first project. You'll learn about webhooks, cron jobs, data analysis, and prompt engineering — all while building something genuinely useful.
-
-And if you're still paying for Whoop — well, now you know there's another way.
+The code is straightforward — a webhook, a couple of cron jobs, and a prompt. If you're running OpenClaw, you can set this up in an afternoon.
 
 ---
 
