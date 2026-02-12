@@ -8,7 +8,7 @@ tags: [AI, health, automation, openclaw]
 
 ## Introduction
 
-For over a year, I paid $30/month for a Whoop subscription. Every morning, I'd check my recovery score, read the sleep analysis, and get workout recommendations based on my HRV and resting heart rate. It was genuinely useful — until I realized I was paying for an interpretation layer on top of data my Apple Watch already collects.
+For two years, I paid $30/month for a Whoop subscription. Every morning, I'd check my recovery score, read the sleep analysis, and get workout recommendations based on my HRV and resting heart rate. It was genuinely useful — until I realized I was paying for an interpretation layer on top of data my Apple Watch already collects.
 
 The hardware wasn't the value. The value was the morning briefing: "Your recovery is 76%, you had good REM sleep, today is a good day for intensity." That contextual coaching that tells you not just what happened, but what to do about it.
 
@@ -264,20 +264,20 @@ Be direct, personal, actionable.
 Here's an actual morning briefing I received today:
 
 ```
-🌅 Ранковий брифінг — 12 лютого
+🌅 Morning Briefing — Feb 12
 
-😴 Сон: 7.62 год (deep 0.89h, REM 1.76h) ✅
-❤️ Resting HR: 49 bpm (baseline 52) — відмінно
-📊 HRV: 131 ms (baseline 120) — recovery вище норми
+😴 Sleep: 7.62h (deep 0.89h, REM 1.76h) ✅
+❤️ Resting HR: 49 bpm (baseline 52) — excellent
+📊 HRV: 131 ms (baseline 120) — recovery above normal
 🩸 SpO2: 99%
 
-Recovery: 🟢 Відмінна — можна тренуватись інтенсивно
+Recovery: 🟢 Excellent — good day for intensity
 
-📅 Сьогодні: Dutch 12:00, WeFact 16:00, OpenClaw Builders 17:00
-🏋️ Вікно для тренування: 14:00-15:30 (між Dutch і WeFact)
-   Рекомендація: strength training 45-60 хв
+📅 Today: Dutch lesson 12:00, WeFact 16:00, OpenClaw Builders 17:00
+🏋️ Training window: 14:00-15:30 (between Dutch and WeFact)
+   Recommendation: strength training 45-60 min
 
-💡 Calendar load помірний. Recovery дозволяє повну активність.
+💡 Calendar load moderate. Recovery supports full activity.
 ```
 
 This is the difference between a dashboard and a coach. Whoop would give me a score. My agent tells me exactly when to train and what to do.
@@ -302,13 +302,13 @@ high stress = probably doing too much.
 Example alert I received last week:
 
 ```
-⚠️ HR підвищений останню годину (avg 95 bpm at rest).
-HRV знизився до 65 ms.
+⚠️ HR elevated for the past hour (avg 95 bpm at rest).
+HRV dropped to 65 ms.
 
-Це може означати стрес або перевтому.
-У тебе 3 мітинги залишилось сьогодні — варто один скасувати?
+This could mean stress or overexertion.
+You have 3 meetings left today — worth dropping one?
 
-Есенціалізм: менше, але краще.
+Essentialism: less, but better.
 ```
 
 I canceled one of the meetings. My HRV recovered within an hour. That's actionable coaching.
