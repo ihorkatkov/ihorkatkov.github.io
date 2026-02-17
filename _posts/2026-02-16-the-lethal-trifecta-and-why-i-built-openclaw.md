@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Lethal Trifecta and Why I Built My Autonomous Agent"
+title: "Living With the Lethal Trifecta: A Practical Guide to Personal AI Agent Security"
 date: 2026-02-16
 author: "Ihor Katkov"
 tags: [AI, agents, security, openclaw]
