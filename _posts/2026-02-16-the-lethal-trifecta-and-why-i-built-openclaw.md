@@ -101,6 +101,12 @@ For example, Aris can read my calendar freely. But sending a Telegram message re
 
 This is the practical implementation of the lethal trifecta defense: even if the agent gets tricked into wanting to exfiltrate data, the tool policy blocks the action or routes it through me first. The agent's intentions don't matter if the tool won't execute without my thumbprint.
 
+But here's the thing: tool policies shouldn't live inside the LLM. The model that's vulnerable to prompt injection should not be the same system that decides whether an action is allowed. That's like asking the person being social-engineered to also be the security guard.
+
+Tool policies need to be a separate service. Think banking SMS verification: your bank doesn't ask the teller if the transaction is legitimate — it sends a code to your phone. Same principle. A standalone policy service receives the agent's request, checks the rules, and if the action is sensitive, pushes an approve/deny prompt to your phone. You tap yes or no. The agent never touches the gate.
+
+This isn't friction. If you've used modern banking, you already do this dozens of times a week without thinking about it. In fintech, we learned that security confirmations aren't obstacles — they're the happy path. The same applies to AI agents. I'm planning to release a library around this pattern. More on that in a future post.
+
 ### 5. Don't install third-party skills or plugins
 
 This is counterintuitive. The ecosystem is full of MCP servers, plugins, and skill packages that extend what agents can do. Don't use them.
@@ -128,6 +134,8 @@ The key insight: reduce the blast radius. No single layer is perfect. Sandboxing
 Together, they make exploitation significantly harder and limit the damage when it happens. Defense in depth, not magic guardrails.
 
 Could a sophisticated attacker still get through? Probably. But it would take work. And it would leave a trail.
+
+Here's the perspective that keeps me sane: the threat model for a well-configured AI agent is not worse than the threat model for a human employee with the same access. It's arguably better. A human with access to your email, calendar, and GitHub can be bribed, phished, or socially engineered. They don't log every action. They don't need approval for every sensitive operation. They can copy data to a USB drive and walk out. An agent running in a sandboxed container, behind a VPN, with tool policies and a full audit trail? That's harder to compromise than most humans. Not impossible. But harder.
 
 ## What Comes Next
 
