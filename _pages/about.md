@@ -34,6 +34,4 @@ I'm a Founding Engineer at [Neno](https://neno.co), where we're building Europe'
 
 I own the technical architecture end-to-end: document processing pipelines, banking infrastructure, and the AI layer that ties it all together.
 
-On the side, I built [Aris](https://ihorkatkov.github.io/blog/2026/the-lethal-trifecta-and-why-i-built-openclaw/) — a personal AI agent that runs on [OpenClaw](https://openclaw.ai). It manages my calendar, health data, code reviews, standup updates, and content pipeline. I write about what happens when you give an LLM access to your life and try to do it securely.
-
 Before Neno: engineering leadership, trading systems, fintech infrastructure. Nearly a decade of building things that handle money and can't afford to break.
