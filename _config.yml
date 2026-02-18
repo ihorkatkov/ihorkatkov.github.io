@@ -8,10 +8,8 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Ihor Katkov's personal site. Ihor is an engineering leader and investor, recognized for his expertise in building high-performance trading systems.
-  He possesses a strong combination of business acumen, strategic vision, technical proficiency,
-  and exceptional leadership skills. 
-keywords: Engineering Leader | Tech Lead | CTO | High-performing trading solutions builder
+  Ihor Katkov — Founding Engineer at Neno. Builds AI-powered fintech by day, deploys autonomous AI agents by night. Writes about both.
+keywords: Founding Engineer | AI Agents | Fintech | Security | OpenClaw
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
