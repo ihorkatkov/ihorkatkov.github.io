@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <i>Embrace the Chaos. Craft Your Own Order.</i>
+subtitle: <i>Builds AI-powered fintech by day, deploys autonomous AI agents by night.</i>
 
 profile:
   align: right
@@ -30,6 +30,10 @@ latest_researches:
   limit: 5 # leave blank to include all the researches
 ---
 
-As a Technical Lead with nearly a decade of experience in software engineering, I specialize in building resilient, scalable, and high-performing systems for trading and financial services. My journey has taken me from hands-on coding to leading cross-functional teams, where I’ve tackled complex infrastructure challenges and driven innovation at the intersection of finance and tech.
+I'm a Founding Engineer at [Neno](https://neno.co), where we're building Europe's first AI-powered financial services company. 26 million European SMEs are stuck between self-serve software that's too complex and traditional accountants that are too expensive. We're closing that gap with AI agents that handle the repetitive 80% and human experts who handle the judgment calls.
 
-I’m driven by a passion for solving complex problems and continuously learning new technologies. My approach combines strategic thinking with a hands-on mindset, ensuring that solutions are both practical and scalable. Currently, I’m exploring new challenges where I can bring my expertise to help companies build robust, efficient, and scalable systems.
+I own the technical architecture end-to-end: document processing pipelines, banking infrastructure, and the AI layer that ties it all together.
+
+On the side, I built [Aris](https://ihorkatkov.github.io/blog/2026/the-lethal-trifecta-and-why-i-built-openclaw/) — a personal AI agent that runs on [OpenClaw](https://openclaw.ai). It manages my calendar, health data, code reviews, standup updates, and content pipeline. I write about what happens when you give an LLM access to your life and try to do it securely.
+
+Before Neno: engineering leadership, trading systems, fintech infrastructure. Nearly a decade of building things that handle money and can't afford to break.
