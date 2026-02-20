@@ -3,7 +3,7 @@
   Usage: {% include research_card.liquid research=research_post %}
 {% endcomment %}
 
-{% assign read_time = include.research.content | number_of_words | divided_by: 180 | plus: 1 %}
+{% if include.research.content %}{% assign read_time = include.research.content | number_of_words | divided_by: 180 | plus: 1 %}{% else %}{% assign read_time = 1 %}{% endif %}
 
 <article class="research-card">
   <div class="research-header">

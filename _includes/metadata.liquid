@@ -264,7 +264,7 @@
                 "url": "{{ site.og_image | prepend: site.baseurl | prepend: site.url }}"
             }{% endif %}
         }{% if og_image %},
-        "image": {% if og_image contains '://' %}"{{ og_image }}"{% else %}"{{ og_image | prepend: site.baseurl | prepend: site.url }}"{% endif %}{% endif %}{% assign word_count = page.content | number_of_words %}{% if word_count %},
+        "image": {% if og_image contains '://' %}"{{ og_image }}"{% else %}"{{ og_image | prepend: site.baseurl | prepend: site.url }}"{% endif %}{% endif %}{% if page.content %}{% assign word_count = page.content | number_of_words %}{% endif %}{% if word_count %},
         "wordCount": {{ word_count }}{% endif %}{% endif %}
     }
   </script>
