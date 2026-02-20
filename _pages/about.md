@@ -35,3 +35,10 @@ I'm a Founding Engineer at [Neno](https://neno.co), where we're building Europe'
 I own the technical architecture end-to-end: document processing pipelines, banking infrastructure, and the AI layer that ties it all together.
 
 Before Neno: engineering leadership, trading systems, fintech infrastructure. Nearly a decade of building things that handle money and can't afford to break.
+
+## Featured & Community
+
+- **Published on [HackerNoon](https://hackernoon.com/u/ihorkatkov)** — writing about AI agents and engineering
+- **Open source contributor to [OpenClaw](https://github.com/openclaw/openclaw/pull/21193)** — PR #21193
+- **Mentor at PyLadies Hackathon** — MLOps Open Source Sprint
+- **Follow me on [Twitter @ihor_katkov](https://twitter.com/ihor_katkov)** — where I share my building journey
