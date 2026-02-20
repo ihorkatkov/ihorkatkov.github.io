@@ -23,7 +23,7 @@ Separation of concerns — the same principle we've applied to software architec
 
 ## The Pantheon
 
-I built a system of specialized agents on top of [opencode](https://github.com/nichochar/opencode), each with a custom prompt, custom skills, and a specific role. opencode already uses Greek mythology naming internally, which turned out to be more than aesthetic. LLMs are trained extensively on Greek mythology. When you name an agent "Vulkanus" and tell it to forge robust code through test-driven development, you're tapping into a deep well of associative context the model already has. Call it "agent-1" and you get nothing. Call it Vulkanus, god of the forge, and the model leans into the role. Trust me bro.
+I built a system of specialized agents on top of [opencode](https://github.com/nichochar/opencode), each with a custom prompt, custom skills, and a specific role. opencode already uses Greek mythology naming internally, which turned out to be more than aesthetic. LLMs are trained extensively on Greek mythology. When you name an agent "Vulkanus" and tell it to forge robust code through test-driven development, you're tapping into a deep well of associative context the model already has. Call it "agent-1" and you get nothing. Call it Vulkanus, god of the forge, and the model leans into the role.
 
 The roster:
 
@@ -135,15 +135,13 @@ Research → Fix → PR → Better autonomy → More fixes. It compounds.
 
 This maps to something Greg McKeown writes about in *Essentialism* — it's not about doing more things. It's about building systems where each layer amplifies the next. Fewer projects, deeper investment, bigger returns. The Pantheon isn't six agents doing six separate jobs. It's six agents forming one system where Zeus's orchestration makes Vulkanus's testing more effective, which makes Prometheus's plans more reliable, which makes Zeus's orchestration better.
 
-## What Comes Next
-
-Here's where the ceiling is.
+## Where This Breaks Down
 
 True self-improvement recursion doesn't exist yet. What I have is a manually-wired loop: Aris logs → Oracle analyzes → recommendations file → I review → changes get implemented (sometimes by Aris, sometimes by me). The human is still in the loop at critical junctures. The Oracle can recommend, but it can't autonomously restructure Aris's prompt or rewrite her delegation logic.
 
 The gap between "system that analyzes itself" and "system that improves itself" is the gap the entire industry is staring at right now. Anthropic published their compiler rewrite paper showing agents that can tackle large-scale code migrations. Cursor shipped background agents that run while you're away. Everyone's moving toward long-running, autonomous agent orchestration.
 
-But a straightforward solution doesn't exist. The problems are real: agent drift over long sessions, error accumulation without human checkpoints, the difficulty of evaluating whether an autonomous change actually made things better or just different. When your agent modifies its own prompts, how do you know the modification was an improvement? You need evaluation, and evaluation of open-ended behavior is an unsolved problem.
+No one has solved it yet. The problems are real: agent drift over long sessions, error accumulation without human checkpoints, the difficulty of evaluating whether an autonomous change actually made things better or just different. When your agent modifies its own prompts, how do you know the modification was an improvement? You need evaluation, and evaluation of open-ended behavior is an unsolved problem.
 
 I think the industry solves long-running agent orchestration this year. The pieces are there — better models, better tooling, better understanding of agent architectures. What I'm doing with the Pantheon and the Oracle Loop is a workaround for the absence of true recursive improvement. A good workaround. A productive one. But a workaround.
 
@@ -155,6 +153,6 @@ It's not about any individual agent. It's the architecture. The separation of co
 
 Every engineer I talk to about AI agents starts with the same question: "Which model should I use?" Wrong question. The model is a component. The architecture is the product. A well-orchestrated system of focused agents on a mid-tier model will outperform a monolithic agent on the best model available. I've watched it happen repeatedly.
 
-Build the system. Name your agents after Greek gods if it helps (it does). Give each one a sharp, specific role. Wire them together with explicit delegation, not implicit context sharing. Log everything. Analyze the logs with a different model than the one generating them. And accept that true recursion isn't here yet — but the compounding effects of a well-built system are already worth the investment.
+The model is a component. The architecture is the product. Build the system, wire explicit delegation, log everything, analyze the logs with a different model than the one generating them.
 
 My assistant fixed her own platform and submitted the PR to prove it. That's not recursion. That's something better — it's compounding.
