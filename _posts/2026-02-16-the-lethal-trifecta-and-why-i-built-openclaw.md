@@ -4,6 +4,8 @@ title: "Living With the Lethal Trifecta: A Practical Guide to Personal AI Agent 
 date: 2026-02-16
 author: "Ihor Katkov"
 tags: [AI, agents, security, openclaw]
+description: "I gave my AI agent access to health data, calendar, and GitHub. Here's how I secure it against prompt injection and the lethal trifecta."
+image: /assets/img/lethal-trifecta-hero.jpeg
 ---
 
 I gave my OpenClaw AI agent the name Aris, access to my health data, family Telegram chat, calendar, and GitHub. OpenClaw is an open-source agent framework for building and running personal AI assistants that can interact with various apps and data sources. Simon Willison would call this insane, and he is probably right.

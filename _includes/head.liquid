@@ -1,6 +1,9 @@
 <!-- Metadata, OpenGraph and Schema.org -->
 {% include metadata.liquid %}
 
+<!-- RSS Feed -->
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }} - Feed" href="{{ '/feed.xml' | prepend: site.baseurl | prepend: site.url }}">
+
 <!-- Bootstrap & MDB -->
 <link rel="stylesheet" href="{{ '/assets/css/bootstrap.min.css' | relative_url | bust_file_cache }}">
 <link
