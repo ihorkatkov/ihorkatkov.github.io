@@ -17,6 +17,8 @@
   <footer class="sticky-bottom mt-5" role="contentinfo">
     {% if site.newsletter.enabled %}
       {% include newsletter.liquid %}
+    {% else %}
+      {% include newsletter_simple.liquid %}
     {% endif %}
 
     <div class="container">

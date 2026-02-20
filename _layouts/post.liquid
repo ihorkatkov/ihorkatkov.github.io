@@ -90,6 +90,9 @@ layout: default
     {% endif %}
   {% endif %}
 
+  <!-- Newsletter subscription -->
+  {% include newsletter_simple.liquid %}
+
   {% if site.disqus_shortname and page.disqus_comments %}
     {% include disqus.liquid %}
   {% endif %}
