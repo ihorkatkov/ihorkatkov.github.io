@@ -38,6 +38,7 @@ Before Neno: engineering leadership, trading systems, fintech infrastructure. Ne
 
 ## Featured & Community
 
+- **Featured by [Google Cloud](https://www.linkedin.com/posts/ihorkatkov_%F0%9D%98%8E%F0%9D%98%B0%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B4-%F0%9D%98%B1%F0%9D%98%B3%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%B3%F0%9D%98%A6%F0%9D%98%B4%F0%9D%98%B4-%F0%9D%98%B0%F0%9D%98%B7%F0%9D%98%A6%F0%9D%98%B3-activity-7394649225130639360-jtna)** — quoted on agent infrastructure at Google AI Agents event, Rotterdam
 - **Published on [HackerNoon](https://hackernoon.com/u/ihorkatkov)** — writing about AI agents and engineering
 - **Open source contributor to [OpenClaw](https://github.com/openclaw/openclaw/pull/21193)** — PR #21193
 - **Mentor at PyLadies Hackathon** — MLOps Open Source Sprint
