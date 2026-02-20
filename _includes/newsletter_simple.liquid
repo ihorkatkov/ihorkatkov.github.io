@@ -6,7 +6,7 @@
     action="https://buttondown.email/api/emails/embed-subscribe/ihorkatkov" 
     method="post" 
     target="popupwindow" 
-    onsubmit="window.open('https://buttondown.email/ihorkatkov', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"
+    onsubmit="window.open('https://buttondown.email/ihorkatkov', 'popupwindow', 'scrollbars=yes,width=800,height=600');if(typeof gtag==='function'){gtag('event','newsletter_subscribe',{event_category:'engagement',event_label:'buttondown'});}return true"
     style="display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 500px; margin: 0 auto;"
   >
     <input 
