@@ -1,29 +1,75 @@
-<div class="newsletter-container" style="margin: 40px 0; padding: 30px; background: #f8f9fa; border-radius: 8px; text-align: center;">
-  <h3 style="margin-top: 0; margin-bottom: 10px; font-size: 1.5rem;">Stay Updated</h3>
-  <p style="margin-bottom: 20px; color: #666;">Get my next post on AI agents, engineering, and other cool stuff. No spam, unsubscribe anytime</p>
+<div class="newsletter-simple-container">
+  <h3>Stay Updated</h3>
+  <p>Get my next post on AI agents, engineering, and other cool stuff. No spam, unsubscribe anytime</p>
   
   <form 
     action="https://buttondown.email/api/emails/embed-subscribe/ihorkatkov" 
     method="post" 
     target="popupwindow" 
     onsubmit="window.open('https://buttondown.email/ihorkatkov', 'popupwindow', 'scrollbars=yes,width=800,height=600');if(typeof gtag==='function'){gtag('event','newsletter_subscribe',{event_category:'engagement',event_label:'buttondown'});}return true"
-    style="display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 500px; margin: 0 auto;"
   >
     <input 
       type="email" 
       name="email" 
       placeholder="your@email.com" 
       required
-      style="width: 100%; padding: 12px 16px; font-size: 1rem; border: 1px solid #ddd; border-radius: 4px;"
     >
     <input type="hidden" value="1" name="embed">
-    <button 
-      type="submit"
-      style="width: 100%; padding: 12px 16px; font-size: 1rem; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s;"
-      onmouseover="this.style.background='#555'"
-      onmouseout="this.style.background='#333'"
-    >
-      Subscribe
-    </button>
+    <button type="submit">Subscribe</button>
   </form>
 </div>
+
+<style>
+.newsletter-simple-container {
+  margin: 40px 0;
+  padding: 30px;
+  background: var(--global-bg-color, #f8f9fa);
+  border: 1px solid var(--global-divider-color, #eee);
+  border-radius: 8px;
+  text-align: center;
+}
+.newsletter-simple-container h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: var(--global-text-color, #333);
+}
+.newsletter-simple-container p {
+  margin-bottom: 20px;
+  color: var(--global-text-color-light, #666);
+}
+.newsletter-simple-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.newsletter-simple-container input[type="email"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid var(--global-divider-color, #ddd);
+  border-radius: 4px;
+  background: var(--global-card-bg-color, #fff);
+  color: var(--global-text-color, #333);
+}
+.newsletter-simple-container input[type="email"]::placeholder {
+  color: var(--global-text-color-light, #999);
+}
+.newsletter-simple-container button[type="submit"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  background: var(--global-theme-color, #333);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.newsletter-simple-container button[type="submit"]:hover {
+  opacity: 0.85;
+}
+</style>

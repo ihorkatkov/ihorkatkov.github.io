@@ -8,6 +8,8 @@ description: "I gave my AI agent access to health data, calendar, and GitHub. He
 image: /assets/img/lethal-trifecta-hero.jpeg
 ---
 
+![Living With the Lethal Trifecta: A Practical Guide to Personal AI Agent Security](/assets/img/lethal-trifecta-hero.jpeg){: .img-fluid .rounded .z-depth-1 }
+
 I gave my OpenClaw AI agent the name Aris, access to my health data, family Telegram chat, calendar, and GitHub. OpenClaw is an open-source agent framework for building and running personal AI assistants that can interact with various apps and data sources. Simon Willison would call this insane, and he is probably right.
 
 Here's what a Tuesday morning looks like. At 7:30, Aris sends my morning briefing: sleep score from Apple Watch, resting heart rate trending up, recovery recommendation to take it easy today. Then it pulls my Google Calendar across two accounts, flags that standup is at 9:30, and reminds me I have Dutch lessons at 4pm.
