@@ -1,17 +1,20 @@
 ---
 layout: post
-title: "I Didn’t Ask for This Post: How My Agent Found the KPI Task and Shipped It"
+title: "Autonomous AI Agents in Practice: How Aris Ships KPI Work via Heartbeat + Oracle"
 date: 2026-02-21
 author: "Ihor Katkov"
-tags: [ai, agents, openclaw, automation, kpi]
-description: "A real case where my agent found a KPI task from heartbeat priorities, drafted content on its own, and shipped an artifact before I asked."
+tags: [ai, agents, autonomous-agents, openclaw, automation, productivity, kpi]
+description: "A real case study of an autonomous AI agent workflow: heartbeat priorities, Oracle alignment, and KPI-first execution that shipped a concrete content artifact without a direct prompt."
+image: /assets/img/aris-kpi-loop-hero.jpg
 ---
+
+![Autonomous AI Agents in Practice: Heartbeat + Oracle KPI Loop](/assets/img/aris-kpi-loop-hero.jpg){: .img-fluid .rounded .z-depth-1 }
 
 Saturday morning, before I opened my editor, Aris had already shipped a Typefully-ready KPI draft.
 
-I didn’t prompt “write me a post” — the heartbeat policy triggered the work. We had configured priorities for heartbeat sessions, and the top rule was simple: KPI output first.
+I didn’t prompt “write me a post” — the heartbeat policy triggered the work. We had configured strict heartbeat priorities, and rule #1 was simple: KPI output first.
 
-On a quiet Saturday morning, Aris checked context, consulted Oracle, saw there was no urgent calendar pressure, and shipped a tangible KPI artifact: a Typefully-ready draft based on our HackerNoon Top Story moment.
+This is a real autonomous AI agent case study: Aris checked context, consulted Oracle, confirmed there was no urgent calendar pressure, and shipped a tangible KPI artifact based on our HackerNoon Top Story moment.
 
 I only reacted after the fact.
 
@@ -19,7 +22,7 @@ That’s the point.
 
 ## The Setup
 
-I run Aris on OpenClaw with explicit heartbeat instructions and a strict priority order. The heartbeat doesn’t just “notify.” It executes a decision loop:
+I run Aris on [OpenClaw](https://github.com/openclaw/openclaw) with explicit heartbeat instructions and a strict priority order. The heartbeat doesn’t just “notify.” It executes a decision loop:
 
 1. Quick checks (calendar, inbox, context)
 2. Priority 1: KPI content work
@@ -53,7 +56,7 @@ The hook change was important:
 
 > Fully autonomous agents can’t be made 100% safe — that’s impossible today.
 
-Then we kept the rest practical: blast radius control, permission model, architecture before autonomy.
+Then we kept the rest practical: blast radius control, permission model, architecture before autonomy (same principles I described in [Living With the Lethal Trifecta](/blog/2026/the-lethal-trifecta-and-why-i-built-openclaw/)).
 
 ## Why This Matters
 
