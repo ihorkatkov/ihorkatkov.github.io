@@ -25,31 +25,27 @@ Recovery: 🟢 Excellent — good day for intensity
 
 I'm out of bed before I've opened anything else.
 
-A year earlier, I'd have gotten the same information from Whoop — $30/month for a recovery score and a workout suggestion. But Whoop didn't know my calendar. It couldn't tell me *when* to train, only that I *could*. And every metric it tracked, my Apple Watch was already collecting.
+Think of it like code review. The diff is already there — the health data. What you need is something that understands the context: your baselines, your schedule, your goals. That tells you what it means and what to do next. That's an AI agent.
+
+A year earlier I'd have gotten a score from Whoop. But Whoop didn't know my calendar. It couldn't tell me *when* to train, only that I *could*. And every metric it tracked, my Apple Watch was already collecting.
 
 So I built my own interpretation layer. Using [OpenClaw](https://github.com/openclaw/openclaw) and Apple Health data, I get a personalized morning briefing, daytime stress alerts, and calendar-aware workout suggestions — from my Apple Watch, processed by an agent that knows my baselines and my schedule. This post is exactly how to replicate it.
 
 ## Two Years With Whoop
 
-Let me be clear: Whoop is a great product. I used it for two years and it genuinely changed how I think about my body.
+Whoop is a great product — I used it for two years and it changed how I understand my body. That's exactly why I canceled it.
 
-The first two months I was obsessed. Every morning I checked my recovery score and worked to get green days. I tracked diet, journaled workouts, logged everything. It felt like too much — but the data was teaching me things that were counterintuitive. I had to walk more, not less, to recover. Go to bed earlier. I designed a specific gym routine that left me feeling better the *next* day instead of wrecked. Things I never would have figured out on my own.
+The first two months I was obsessed. I tracked diet, journaled workouts, optimized for green recovery days. It felt excessive — but it was teaching me counterintuitive things. I had to walk more, not less, to recover. Go to bed earlier. I designed a specific gym routine that left me feeling better the *next* day instead of wrecked. Lessons I never would have found without the data.
 
-After two years, I'd distilled it all down to a simple set of rules: **sleep better, manage stress, actively restore, train.** Those rules are mine now. I don't need the app to teach them to me anymore.
+After two years, I'd distilled everything into four rules: **sleep better, manage stress, actively restore, train.** Those rules are mine now. I don't need the app to remind me of them.
 
-So I canceled.
+What I couldn't replace was something Whoop never had: active intelligence.
 
-The Apple Watch metrics aren't as precise — the Whoop strap is designed specifically for health tracking, the Watch isn't. But "good enough" is fine when you already know your baselines and what to do with them.
+Whoop doesn't know my calendar. It can't see that I have back-to-back meetings until 18:00 and suggest training at 14:00 instead. It can't connect my morning HRV dip to my afternoon workload and recommend cutting a meeting. Its journal tracks what happened — but it doesn't shape what happens next.
 
-What I couldn't replace was something Whoop never actually had: **active intelligence**.
-
-Whoop doesn't know about my calendar. It can't see that I have back-to-back meetings until 18:00 and suggest training at 14:00 instead of skipping entirely. It can't connect my morning HRV to my afternoon energy crash and recommend cutting the day short. Its diary feature tracks what happened — but it doesn't proactively shape what happens next.
-
-One of Whoop's best features is the journal. You answer questions every day, it learns patterns. But you don't need a separate diary when you have an autonomous agent that already knows your calendar, your health data, your emails, your workload. An agent that's been fine-tuned *specifically for you* — not for a generic user.
+You don't need a separate diary when you have an autonomous agent that already knows your calendar, your emails, your workload. An agent fine-tuned *specifically for you* — not for a generic user.
 
 That's what I built.
-
-Think of it like code review. The diff is already there (the health data). What you need is something that understands the context — your baselines, your schedule, your goals — to tell you what it means and what to do next.
 
 ## The Framework
 
@@ -66,7 +62,7 @@ Three parts:
 - Checks today's calendar
 - Generates recovery assessment + workout recommendation
 
-**3. Daytime monitoring (heartbeat)**
+**3. Stress sentinel (heartbeat)**
 - Every 30 minutes, agent checks for stress signals
 - Alerts only if heart rate is elevated *and* HRV is low — real stress, not noise
 - Frames through essentialism: "You have 3 meetings left today — worth skipping one?"
@@ -132,7 +128,6 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({ status: 'ok', file: filename }));
       } catch (e) {
         console.error('Parse error:', e.message);
-        // Save raw body for debugging
         const ts = new Date().toISOString().replace(/[:.]/g, '-');
         fs.writeFileSync(path.join(DATA_DIR, `raw-${ts}.txt`), body);
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -166,202 +161,152 @@ nohup node webhook-server.js > "$SCRIPT_DIR/server.log" 2>&1 &
 echo "Health webhook started (PID $!) on port ${HEALTH_WEBHOOK_PORT:-8090}"
 ```
 
-```bash
-chmod +x workspace/health/start-server.sh
-```
-
-Expose port 8090 in your `docker-compose.yml`:
+Expose port 8090 in your `docker-compose.yml` and auto-start:
 
 ```yaml
 services:
   gateway:
-    # ... existing config ...
     ports:
       - "18789:18789"
-      - "18790:18790"
-      - "8090:8090"  # Health webhook
+      - "8090:8090"
+    command:
+      - sh
+      - -c
+      - |
+        /home/node/.openclaw/workspace/health/start-server.sh &
+        node dist/index.js gateway --bind lan --port 18789
 ```
 
-Auto-start the webhook with your agent by updating the docker-compose `command`:
-
-```yaml
-command:
-  - sh
-  - -c
-  - |
-    /home/node/.openclaw/workspace/health/start-server.sh &
-    node dist/index.js gateway --bind lan --port 18789
-```
-
-Restart your container:
+Restart and verify:
 
 ```bash
 docker-compose restart
-```
-
-Verify it's running:
-
-```bash
 curl http://localhost:8090/health
-# Should return: {"status":"ok","timestamp":"..."}
+# {"status":"ok","timestamp":"..."}
 ```
 
 ### Step 2: Configure Health Auto Export
 
-Install [Health Auto Export](https://apps.apple.com/app/health-auto-export/id1115567461) on your iPhone. This is the only paid component ($5 one-time).
+Install [Health Auto Export](https://apps.apple.com/app/health-auto-export/id1115567461) on your iPhone ($5 one-time).
 
 Open the app → **Automations** → **Add Automation**:
 
-- **URL**: `http://YOUR_OPENCLAW_IP:8090/health-data`
-  - If using Tailscale (recommended): `http://100.x.x.x:8090/health-data`
-  - If on local network: your machine's LAN IP
-- **Interval**: Every 3 hours (I use 3h, but 6h works too)
-- **Metrics to export**:
-  - ✅ Heart Rate
-  - ✅ Resting Heart Rate
-  - ✅ Heart Rate Variability (HRV)
-  - ✅ Blood Oxygen Saturation (SpO2)
-  - ✅ Sleep Analysis
-  - ✅ Respiratory Rate
-  - ✅ Wrist Temperature
-  - ✅ Step Count
-  - ✅ Active Energy
-  - ✅ Exercise Minutes
+- **URL**: `http://YOUR_OPENCLAW_IP:8090/health-data` (Tailscale recommended: `http://100.x.x.x:8090/health-data`)
+- **Interval**: Every 3 hours
+- **Metrics**: HR, Resting HR, HRV, SpO2, Sleep Analysis, Respiratory Rate, Wrist Temperature, Step Count, Active Energy, Exercise Minutes
 
-Save and run once manually to test.
-
-**Important**: Your iPhone must be able to reach the webhook URL. If OpenClaw runs at home, your phone needs to be on the same network or use Tailscale. I use Tailscale — it's the easiest setup for mobile → server communication.
-
-Verify data is arriving:
-
-```bash
-ls workspace/health/data/
-# Should show: health-2026-02-12T09-37-46-453Z.json
-```
+Your iPhone must reach the webhook. Tailscale is the cleanest solution for mobile → home server.
 
 ### Step 3: Know Your Baselines
 
-Before the AI can tell you "your recovery is low," it needs to know what's normal for you. Generic thresholds don't work. My resting heart rate of 49 bpm is excellent for me, but might be worrying for someone else.
-
-Track for 1-2 weeks, then calculate your personal baselines. Mine (from Whoop historical data):
+Generic thresholds don't work. My resting HR of 49 bpm is excellent for me, but might read as worrying for someone else. Track for 1-2 weeks, then set your baselines. Mine (from Whoop historical data):
 
 | Metric | My Baseline | Alert Threshold |
-|--------|------------|-----------------| 
+|--------|-------------|-----------------|
 | Resting HR | 52 bpm | > 60 bpm |
 | HRV (SDNN) | 120 ms | < 80 ms |
 | SpO2 | 97% | < 95% |
 | Sleep | 7.5h | < 7h |
 
-If you don't have Whoop history, track Apple Watch data for 2 weeks and ask your agent to calculate averages. It can read the JSON files and compute the stats.
-
 ### Step 4: Morning Briefing (The Core)
 
-Every morning at 7:30 AM, the agent reads my latest health data, compares it with my baselines, checks my calendar, and gives me a recovery score + workout recommendation.
-
-In OpenClaw, I configured a cron job. Here's the prompt I use:
+Every morning at 7:30 AM, the agent reads my health data, checks my calendar, and gives me a recovery score + workout recommendation. Here's the cron prompt:
 
 ```
 MORNING BRIEFING. Do ALL of these:
 
 1. SLEEP & HEALTH: Read latest health data from workspace/health/data/
-   (find most recent health-*.json). Extract: sleep (totalSleep, deep, rem,
-   core, awake, sleepStart, sleepEnd), resting_heart_rate, heart_rate_variability,
-   blood_oxygen_saturation, respiratory_rate, apple_sleeping_wrist_temperature.
-   Compare with baselines: resting HR ~52 (alert >60), HRV ~120 (alert <80),
-   sleep >7h.
+   Extract: sleep (totalSleep, deep, rem, core, awake), resting_heart_rate,
+   heart_rate_variability, blood_oxygen_saturation, respiratory_rate,
+   apple_sleeping_wrist_temperature.
+   Baselines: resting HR ~52 (alert >60), HRV ~120 (alert <80), sleep >7h.
 
-2. CALENDAR: Check today's events. List the schedule.
+2. CALENDAR: Check today's events.
 
-3. RECOVERY SCORE: Based on sleep + HRV + resting HR, rate recovery:
-   🟢 Good (train hard), 🟡 Moderate (light training ok), 🔴 Poor (rest day).
+3. RECOVERY SCORE: 🟢 Good / 🟡 Moderate / 🔴 Poor (rest day).
 
-4. WORKOUT SUGGESTION: Based on recovery + calendar gaps, suggest:
-   - Type (strength/cardio/mobility/rest)
-   - Time window that fits the calendar
-   - Duration
+4. WORKOUT SUGGESTION: Type + time window that fits the calendar + duration.
 
 5. ESSENTIALISM CHECK: If calendar is overloaded + recovery is poor, say it.
-   Recommend what to defer.
 
 Be direct, personal, actionable.
 ```
 
-Whoop would give me a score. My agent tells me exactly when to train and what to do.
+Whoop gives a score. My agent tells me when to train and what to do.
 
-### Step 5: Daytime Stress Monitoring
+### Step 5: Stress Sentinel
 
-The heartbeat check runs every 30 minutes. Most of the time — silence. But when something is off:
+The sentinel runs every 30 minutes. Most of the time — silence. When something is off:
 
 ```
 ⚠️ HR elevated for the past hour (avg 95 bpm at rest).
 HRV dropped to 65 ms.
 
-This could mean stress or overexertion.
 You have 3 meetings left today — worth dropping one?
 
 Essentialism: less, but better.
 ```
 
-I canceled one of the meetings. My HRV recovered within an hour.
+I canceled one of the meetings. HRV recovered within an hour.
 
 ### Step 6: Calendar-Aware Workout Suggestions
 
 | Recovery | Calendar Gap | Suggestion |
 |----------|-------------|------------|
-| 🟢 High HRV, low resting HR | 1.5h+ free | Strength or high-intensity intervals |
-| 🟡 Normal HRV | 1h free | Moderate cardio, padel, swimming |
-| 🔴 Low HRV, high resting HR | Any | Mobility, walking, or full rest |
-| Any | No gaps | "Skip today, don't force it" |
+| 🟢 High HRV, low resting HR | 1.5h+ free | Strength or HIIT |
+| 🟡 Normal HRV | 1h free | Moderate cardio, padel |
+| 🔴 Low HRV, high resting HR | Any | Mobility or rest |
+| Any | No gaps | Skip today |
 
 ## Case Study: A Week of Use
 
-**Monday**: Recovery 🟢, HRV 131 ms. Suggested strength training at 14:00 (1.5h gap before client call). Did it.
+**Monday**: HRV 131 ms. Suggested strength training at 14:00. Did it.
 
-**Wednesday**: Recovery 🟡, HRV 95 ms (dropped from baseline). Calendar showed back-to-back meetings. Agent suggested skipping gym, doing 20min mobility instead. I ignored it, went to padel anyway. Played poorly, felt exhausted after.
+**Wednesday**: HRV 95 ms, back-to-back meetings. Agent suggested 20min mobility. I ignored it, went to padel anyway. Played poorly, felt exhausted after. The agent was right.
 
-**Friday**: Recovery 🔴, HRV 68 ms, resting HR 58 bpm. Agent said "rest day, your body is asking for it." I listened. By Saturday, HRV back to 125 ms.
-
-That Wednesday was the learning moment. The agent was right — my body was already stressed from the meeting load. Adding intense exercise made it worse. I should have listened.
+**Friday**: HRV 68 ms, resting HR 58 bpm. "Rest day." I listened. By Saturday, HRV back to 125 ms.
 
 ## Learnings
 
-**Baselines are everything.** Generic thresholds are useless. "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needed MY numbers to give useful advice.
+**Baselines are everything.** "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needs YOUR numbers.
 
-**Calendar integration makes the difference.** Whoop didn't know my schedule. My agent does. That's why it can say "train at 14:00" instead of just "today is a good day to train."
+**Calendar integration makes the difference.** Whoop didn't know my schedule. My agent does. That's why it says "train at 14:00" instead of "today is a good day to train."
 
-**Silence is golden.** The heartbeat check only alerts when something is wrong. No unnecessary notifications. I learned this from my phone — most alerts are noise. The agent respects my attention.
+**Silence is golden.** The sentinel only alerts when something is wrong. Most health apps drown you in notifications. This one doesn't.
 
 **What didn't work at first:**
+- HRV/resting HR lag 2-3 days in Apple Health. I shifted focus to sleep quality and wrist temperature, which export immediately.
+- Network: iPhone couldn't reach the webhook away from home. Tailscale fixed it.
+- BOM parsing: Health Auto Export added a BOM. Webhook crashed silently. Added `body.replace(/^\uFEFF/, '')`. Always check your logs.
 
-- HRV and resting HR lag 2-3 days in Apple Health in some configurations. I adjusted the morning briefing to focus more on sleep quality and wrist temperature, which export immediately.
-- Network connectivity: the first week, my iPhone couldn't reach the webhook when I was out of the house. I added Tailscale to both iPhone and the server — solved instantly.
-- JSON parsing failures: Health Auto Export added a BOM character at the start of JSON. The webhook crashed silently. I added `body.replace(/^\uFEFF/, '')` to strip it. Always check your logs.
+## Privacy & Security
 
-## The Result
+Your health data doesn't leave your private network. Here's how I handle it:
 
-$5 (Health Auto Export app) + an hour of setup = replaced a $360/year Whoop subscription.
+- **Private network only** — the webhook is accessible via Tailscale, not the public internet. No cloud, no SaaS, no third-party storage.
+- **Encryption at rest** — enable full-disk encryption on your server (FileVault on Mac, LUKS on Linux). The JSON files contain real biometrics.
+- **Retention policy** — I keep 30 days of exports. Old files are deleted automatically. Your health history shouldn't accumulate indefinitely.
+- **What goes to the LLM** — the agent sends parsed metrics (numbers, dates), not raw JSON dumps. Telegram briefings are summaries, not raw biometric data.
+- **What stays local** — all raw files, all conversation history, all baselines. The only thing that leaves is the prompt to the LLM API.
 
-Whoop said: "Your recovery is 76%."  
-My agent says: "Your recovery is great, you have a free window at 14:00, do strength training, but remember you have dinner at 19:00 so don't go too hard."
-
-That's the difference between a dashboard and a coach.
+If you're self-hosting an LLM (Ollama, local Llama), nothing leaves your machine at all.
 
 ## Architecture Reference
 
 ```
 Apple Watch → iPhone (Health app)
                 ↓
-    Health Auto Export app (automated)
+    Health Auto Export (automated, every 3h)
                 ↓
-        HTTP POST (JSON)
+        HTTP POST JSON
                 ↓
-    OpenClaw webhook server (:8090)
+    OpenClaw webhook (:8090) — private network / Tailscale
                 ↓
-        Stored as JSON files
+        JSON files on disk (30-day retention)
                 ↓
-    Cron jobs read & analyze
+    Cron jobs parse + analyze
                 ↓
-    Morning briefing / alerts → Telegram
+    Summaries → LLM API → Morning briefing / alerts → Telegram
 ```
 
 File structure:
@@ -369,37 +314,44 @@ File structure:
 ```
 workspace/
 └── health/
-    ├── webhook-server.js    # HTTP server for receiving data
-    ├── start-server.sh      # Auto-start script
-    ├── server.log           # Server logs
+    ├── webhook-server.js    # HTTP server
+    ├── start-server.sh      # Auto-start
     └── data/
-        ├── health-*.json    # Individual exports
+        ├── health-*.json    # Individual exports (30-day retention)
         └── daily-*.jsonl    # Daily aggregated log
 ```
 
-Health Auto Export JSON field names:
-- `resting_heart_rate` — daily resting HR
-- `heart_rate_variability` — HRV (SDNN)
-- `blood_oxygen_saturation` — SpO2
-- `sleep_analysis` — sleep stages (includes `totalSleep`, `deep`, `rem`, `core`, `awake`, `sleepStart`, `sleepEnd`)
-- `heart_rate` — individual HR readings (array)
-- `respiratory_rate` — breathing rate
-- `apple_sleeping_wrist_temperature` — overnight wrist temp
+## Where This Goes Next
 
-Storage: each export is 500KB-5MB depending on metrics. At 3 exports/day, that's ~5-15MB/day. I keep 30 days and periodically clean up.
+This is version 1. What I'm building toward:
+
+**Multi-signal fatigue model** — instead of single-point HRV, track the 7-day trend. A single low HRV reading is noise. Three consecutive days below baseline is a signal worth acting on.
+
+**Context fusion** — merge health signals with other life signals: calendar density (how many meetings?), travel (timezone shifts), late meals, alcohol. The agent knows my calendar already. Adding the rest makes the model richer.
+
+**Interventions library** — instead of "rest day", the agent suggests a specific protocol: 20min morning walk, sunlight before 9am, caffeine cutoff at 2pm, drop the 4pm meeting. Prescriptive, not descriptive.
+
+**Feedback loop** — after each recommendation, the agent asks "did that help?" in the evening. Over time, it learns which interventions actually move my HRV, not just which ones are theoretically correct.
+
+**Autonomy ladder** — right now the agent advises. Next: draft a weekly training plan. Then: schedule workouts in the calendar. Then: notify my training partner automatically when I'm in a recovery week. Each step is opt-in, each step requires me to verify the agent has enough context to act reliably.
+
+The goal isn't automation. It's augmentation — an agent that knows me well enough to be right most of the time, and knows when to ask.
 
 ## Final Thoughts
 
-Whoop is a great product. It taught me everything I needed to know about my body — and then I outgrew it.
+Whoop gave me the rules. My agent applies them.
 
-Two years of data gave me my personal rules: sleep better, manage stress, actively restore, train. Once you have the rules, you don't need the teacher anymore. What you need is something that applies those rules to your actual life — your calendar, your workload, your specific day.
+Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once you have the rules internalized, you don't need the teacher. What you need is something that applies those rules to your actual life — your calendar, your specific Tuesday, your dinner at 19:00.
 
 That's not a $30/month subscription. That's an agent that knows you.
-
-Whoop gave me the rules. My agent applies them.
 
 $5 (Health Auto Export app) + an hour of setup. That's the whole cost.
 
 ---
 
-*Built with [OpenClaw](https://github.com/openclaw/openclaw). Quick setup guide: [openclaw-agent-bootstrap](https://github.com/ihorkatkov/openclaw-agent-bootstrap).*
+**Get the full setup:**
+→ [openclaw-agent-bootstrap](https://github.com/ihorkatkov/openclaw-agent-bootstrap) — docker-compose, webhook server, cron prompts, Health Auto Export config, baselines template
+→ Built on [OpenClaw](https://github.com/openclaw/openclaw) — open-source agent framework
+
+I'm building the agentic personal OS in public — one component per week.  
+Follow [@ihor_katkov](https://x.com/ihor_katkov) to catch the next build.
