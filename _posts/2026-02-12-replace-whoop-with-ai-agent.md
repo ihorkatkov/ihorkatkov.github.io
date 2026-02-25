@@ -39,7 +39,7 @@ Think of it like code review. The diff is already there (the health data). What 
 
 This is a reference architecture for agentic product layers: **ingest → normalize → baseline → decide → notify.**
 
-The moat in this pattern isn't data collection — it's personalized decisioning + context fusion. Wearables are already commoditized. The agent layer on top of them is not.
+The moat in this pattern isn't data collection — it's **proprietary context + personalized decisioning**. Wearables are already commoditized. The agent layer on top of them is not. And unlike a SaaS product, the context your agent accumulates about you compounds over time — it's yours, it's local, and no competitor can copy it.
 
 Whoop, Oura, Apple Health all give you dashboards. None of them know your calendar, your workload, or your goals. The interpretation layer — the thing that takes your data and maps it to your actual day — is wide open. That's the product.
 
@@ -124,6 +124,10 @@ I could have built this with a cron script and a curl call to the Claude API. I 
 **Memory as first-class concept** — baselines, user preferences, and learned patterns live in workspace files the agent can read and update. Persists across restarts.
 
 If you're building any kind of personal agent, OpenClaw is the platform — not a script host.
+
+**The intelligence flywheel.** Generic health products collect your data but know nothing else about you. OpenClaw agents accumulate proprietary context: your calendar patterns, your baseline trends, your past decisions, your communication style, your goals. That context compounds. The agent that's been running for three months knows you better than one running for a week — and no generic product can replicate that, because that data is yours and it lives locally.
+
+This is the moat that wearables can't copy. Not the sensors. The context.
 
 ---
 
@@ -304,6 +308,8 @@ high stress = probably doing too much. Suggest one concrete action.
 **Autonomy ladder** — advise → draft weekly training plan → schedule workouts → notify training partner. Each step opt-in, each step requires trust earned.
 
 The goal isn't automation. It's augmentation — an agent that knows me well enough to be right most of the time, and knows when to ask.
+
+The longer this runs, the better it gets. Three months from now my agent will have seen patterns in my data that I haven't noticed yet. Six months from now it will understand my rhythms better than any wearable ever could — because it has context no wearable can access. That's the flywheel. That's the product.
 
 ---
 
