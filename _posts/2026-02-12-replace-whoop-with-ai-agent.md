@@ -6,29 +6,42 @@ author: "Ihor Katkov"
 tags: [AI, health, automation, openclaw]
 ---
 
-## Introduction
+Tuesday morning, Feb 12. My phone buzzes at 7:30 AM with the daily briefing from my AI agent:
 
-For two years, I paid $30/month for a Whoop subscription. Every morning, I'd check my recovery score, read the sleep analysis, and get workout recommendations based on my HRV and resting heart rate. It worked — until I realized I was paying for an interpretation layer on top of data my Apple Watch already collects.
+```
+🌅 Morning Briefing — Feb 12
 
-The hardware wasn't the value. The value was the morning briefing: "Your recovery is 76%, you had good REM sleep, today is a good day for intensity." That contextual coaching that tells you not just what happened, but what to do about it.
+😴 Sleep: 7.62h (deep 0.89h, REM 1.76h) ✅
+❤️ Resting HR: 49 bpm (baseline 52) — excellent
+📊 HRV: 131 ms (baseline 120) — recovery above normal
+🩸 SpO2: 99%
 
-So I built that layer myself. Using OpenClaw (an open-source AI agent framework I've been working with) and Apple Health data, I now get a personalized morning health briefing, real-time stress monitoring, and calendar-aware workout suggestions — all from my Apple Watch, processed by an AI that knows my baselines and my schedule.
+Recovery: 🟢 Excellent — good day for intensity
 
-Here's the journey, the framework, and exactly how to replicate it.
+📅 Today: Dutch lesson 12:00, WeFact 16:00, OpenClaw Builders 17:00
+🏋️ Training window: 14:00-15:30
+   Recommendation: strength training 45-60 min
+```
 
-## Background: The Whoop Realization
+I'm out of bed before I've opened anything else.
 
-I started using Whoop because I wanted objective recovery metrics. As someone who trains regularly (mostly strength work and padel), I needed to know when to push and when to back off. Whoop delivered that — but at a cost.
+A year earlier, I'd have gotten the same information from Whoop — $30/month for a recovery score and a workout suggestion. But Whoop didn't know my calendar. It couldn't tell me *when* to train, only that I *could*. And every metric it tracked, my Apple Watch was already collecting.
 
-The breaking point came when I looked at the data sources. Everything Whoop measured — heart rate variability, resting heart rate, sleep stages, respiratory rate, wrist temperature — my Apple Watch already tracked. The only difference? Whoop gave me a score and a recommendation. Apple gave me raw numbers in the Health app.
+So I built my own interpretation layer. Using [OpenClaw](https://github.com/openclaw/openclaw) and Apple Health data, I get a personalized morning briefing, daytime stress alerts, and calendar-aware workout suggestions — from my Apple Watch, processed by an agent that knows my baselines and my schedule. This post is exactly how to replicate it.
 
-That's when I realized: I don't need better sensors. I need a better interpretation layer.
+## The Whoop Realization
 
-Think about it like code review. The diff is already there (the health data). What you need is someone who understands the context (your baselines, your schedule, your goals) to tell you what it means and what to do next. That's exactly what an AI agent can do.
+I started using Whoop because I train regularly — mostly strength work and padel — and I needed to know when to push and when to back off. It delivered that. But eventually I looked at the data sources.
+
+Everything Whoop measured — heart rate variability, resting heart rate, sleep stages, respiratory rate, wrist temperature — my Apple Watch already tracked. The only difference: Whoop gave me a score and a recommendation. Apple gave me raw numbers in the Health app.
+
+I don't need better sensors. I need a better interpretation layer.
+
+Think of it like code review. The diff is already there (the health data). What you need is something that understands the context — your baselines, your schedule, your goals — to tell you what it means and what to do next. That's exactly what an AI agent can do.
 
 ## The Framework
 
-Here's the three-part system I built:
+Three parts:
 
 **1. Data collection (automated)**
 - Apple Watch tracks everything 24/7
@@ -37,16 +50,16 @@ Here's the three-part system I built:
 
 **2. Morning briefing (cron job)**
 - Agent reads latest health data at 7:30 AM
-- Compares with your baselines (resting HR ~52, HRV ~120, sleep >7h for me)
+- Compares with personal baselines (resting HR ~52, HRV ~120, sleep >7h for me)
 - Checks today's calendar
 - Generates recovery assessment + workout recommendation
 
 **3. Daytime monitoring (heartbeat)**
 - Every 30 minutes, agent checks for stress signals
-- Alerts only if heart rate elevated + HRV low (real stress, not noise)
+- Alerts only if heart rate is elevated *and* HRV is low — real stress, not noise
 - Frames through essentialism: "You have 3 meetings left today — worth skipping one?"
 
-The key insight: the agent doesn't just report numbers. It knows my calendar, my baselines, and my preferences. It gives me coaching, not dashboards.
+The agent doesn't report numbers. It knows my calendar, my baselines, my preferences. Coaching, not dashboards.
 
 ## Implementation: Building the System
 
@@ -60,7 +73,7 @@ The key insight: the agent doesn't just report numbers. It knows my calendar, my
 
 ### Step 1: The Webhook Server
 
-First, I needed a way to receive health data from my iPhone. Health Auto Export can POST JSON to any HTTP endpoint, so I built a simple Node.js webhook server inside my OpenClaw workspace.
+Health Auto Export can POST JSON to any HTTP endpoint. I built a simple Node.js webhook server inside the OpenClaw workspace.
 
 Create `workspace/health/webhook-server.js`:
 
@@ -126,7 +139,7 @@ server.listen(PORT, '0.0.0.0', () => {
 });
 ```
 
-The error handling here is important. Health Auto Export sometimes sends a UTF-8 BOM character at the start of JSON, which breaks parsing. The `body.replace(/^\uFEFF/, '')` line strips it. Trust but verify — I learned this the hard way after the first export failed silently.
+The error handling matters. Health Auto Export sometimes sends a UTF-8 BOM character at the start of JSON, which breaks parsing. The `body.replace(/^\uFEFF/, '')` line strips it. Trust but verify — I learned this the hard way after the first export failed silently.
 
 Create a startup script at `workspace/health/start-server.sh`:
 
@@ -216,18 +229,18 @@ ls workspace/health/data/
 
 ### Step 3: Know Your Baselines
 
-Before the AI can tell you "your recovery is low," it needs to know what's normal for you. This is critical — generic thresholds don't work. My resting heart rate of 49 bpm is excellent for me, but might be worrying for someone else.
+Before the AI can tell you "your recovery is low," it needs to know what's normal for you. Generic thresholds don't work. My resting heart rate of 49 bpm is excellent for me, but might be worrying for someone else.
 
-Track for 1-2 weeks, then calculate your personal baselines. My baselines (I had Whoop historical data to reference):
+Track for 1-2 weeks, then calculate your personal baselines. Mine (from Whoop historical data):
 
 | Metric | My Baseline | Alert Threshold |
-|--------|------------|-----------------|
+|--------|------------|-----------------| 
 | Resting HR | 52 bpm | > 60 bpm |
 | HRV (SDNN) | 120 ms | < 80 ms |
 | SpO2 | 97% | < 95% |
 | Sleep | 7.5h | < 7h |
 
-If you don't have Whoop history, just track Apple Watch data for 2 weeks and ask your agent to calculate averages. It can read the JSON files and compute the stats.
+If you don't have Whoop history, track Apple Watch data for 2 weeks and ask your agent to calculate averages. It can read the JSON files and compute the stats.
 
 ### Step 4: Morning Briefing (The Core)
 
@@ -261,45 +274,11 @@ MORNING BRIEFING. Do ALL of these:
 Be direct, personal, actionable.
 ```
 
-Here's an actual morning briefing I received today:
-
-```
-🌅 Morning Briefing — Feb 12
-
-😴 Sleep: 7.62h (deep 0.89h, REM 1.76h) ✅
-❤️ Resting HR: 49 bpm (baseline 52) — excellent
-📊 HRV: 131 ms (baseline 120) — recovery above normal
-🩸 SpO2: 99%
-
-Recovery: 🟢 Excellent — good day for intensity
-
-📅 Today: Dutch lesson 12:00, WeFact 16:00, OpenClaw Builders 17:00
-🏋️ Training window: 14:00-15:30 (between Dutch and WeFact)
-   Recommendation: strength training 45-60 min
-
-💡 Calendar load moderate. Recovery supports full activity.
-```
-
-This is the difference between a dashboard and a coach. Whoop would give me a score. My agent tells me exactly when to train and what to do.
+Whoop would give me a score. My agent tells me exactly when to train and what to do.
 
 ### Step 5: Daytime Stress Monitoring
 
-The heartbeat check runs every 30 minutes and focuses on real-time stress signals. Most of the time, it's silent — no news is good news. But when something is off, it alerts me.
-
-The heartbeat prompt:
-
-```
-Daytime health check = stress/battery only:
-- Heart rate: elevated >90 at rest = stress signal
-- Resting HR: alert if >60
-- HRV: alert if <80 (low battery/recovery)
-
-Do NOT report sleep during the day.
-If stress indicators are high, frame through essentialism:
-high stress = probably doing too much.
-```
-
-Example alert I received last week:
+The heartbeat check runs every 30 minutes. Most of the time — silence. But when something is off:
 
 ```
 ⚠️ HR elevated for the past hour (avg 95 bpm at rest).
@@ -311,11 +290,9 @@ You have 3 meetings left today — worth dropping one?
 Essentialism: less, but better.
 ```
 
-I canceled one of the meetings. My HRV recovered within an hour. Worth it.
+I canceled one of the meetings. My HRV recovered within an hour.
 
 ### Step 6: Calendar-Aware Workout Suggestions
-
-This is where the system becomes more than just health tracking. The agent knows my recovery state AND my schedule. It finds gaps in my calendar and matches them with workout recommendations based on how I'm feeling.
 
 | Recovery | Calendar Gap | Suggestion |
 |----------|-------------|------------|
@@ -324,19 +301,9 @@ This is where the system becomes more than just health tracking. The agent knows
 | 🔴 Low HRV, high resting HR | Any | Mobility, walking, or full rest |
 | Any | No gaps | "Skip today, don't force it" |
 
-If you're using Google Calendar (I use `gog` CLI for integration), the agent checks events automatically:
-
-```bash
-gog calendar events your@email.com --days 1
-```
-
-It sees your meetings, finds free windows, and suggests workout timing. No more "I'll train when I have time" — the agent tells you exactly when.
-
 ## Case Study: A Week of Use
 
-Here's what the system caught in one week:
-
-**Monday**: Recovery 🟢, HRV 131 ms. Suggested strength training at 14:00 (1.5h gap before client call). Did it. Felt great.
+**Monday**: Recovery 🟢, HRV 131 ms. Suggested strength training at 14:00 (1.5h gap before client call). Did it.
 
 **Wednesday**: Recovery 🟡, HRV 95 ms (dropped from baseline). Calendar showed back-to-back meetings. Agent suggested skipping gym, doing 20min mobility instead. I ignored it, went to padel anyway. Played poorly, felt exhausted after.
 
@@ -346,40 +313,28 @@ That Wednesday was the learning moment. The agent was right — my body was alre
 
 ## Learnings
 
-### What Worked
+**Baselines are everything.** Generic thresholds are useless. "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needed MY numbers to give useful advice.
 
-**1. Baselines are everything**
-Generic thresholds are useless. "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needed MY numbers to give useful advice.
+**Calendar integration makes the difference.** Whoop didn't know my schedule. My agent does. That's why it can say "train at 14:00" instead of just "today is a good day to train."
 
-**2. Calendar integration makes the difference**
-Whoop didn't know my schedule. My agent does. That's why it can say "train at 14:00" instead of just "today is a good day to train."
+**Silence is golden.** The heartbeat check only alerts when something is wrong. No unnecessary notifications. I learned this from my phone — most alerts are noise. The agent respects my attention.
 
-**3. Silence is golden**
-The heartbeat check only alerts when something is wrong. No unnecessary notifications. I learned this from my phone — most alerts are noise. The agent respects my attention.
+**What didn't work at first:**
 
-### What Didn't Work (At First)
-
-**1. HRV and resting HR lag**
-Apple Health exports HRV and resting HR with a 2-3 day delay in some configurations. Fresh sleep and activity data arrive immediately, but HR metrics lag. I adjusted the morning briefing to focus more on sleep quality and wrist temperature (which export immediately).
-
-**2. Network connectivity**
-The first week, my iPhone couldn't reach the webhook when I was out of the house. I added Tailscale to both iPhone and the server — solved instantly.
-
-**3. JSON parsing failures**
-Health Auto Export added a BOM character at the start of JSON. The webhook crashed silently. I added `body.replace(/^\uFEFF/, '')` to strip it. Trust but verify — always check your logs.
+- HRV and resting HR lag 2-3 days in Apple Health in some configurations. I adjusted the morning briefing to focus more on sleep quality and wrist temperature, which export immediately.
+- Network connectivity: the first week, my iPhone couldn't reach the webhook when I was out of the house. I added Tailscale to both iPhone and the server — solved instantly.
+- JSON parsing failures: Health Auto Export added a BOM character at the start of JSON. The webhook crashed silently. I added `body.replace(/^\uFEFF/, '')` to strip it. Always check your logs.
 
 ## The Result
 
-For $5 (Health Auto Export app) and an hour of setup, I replaced a $360/year Whoop subscription with something more useful. The AI doesn't just give me a number. It tells me what to do, when to do it, and when to back off.
+$5 (Health Auto Export app) + an hour of setup = replaced a $360/year Whoop subscription.
 
 Whoop said: "Your recovery is 76%."  
-My agent says: "Your recovery is great, you have a free window at 14:00, do strength training, but remember you have a dinner at 19:00 so don't go too hard."
+My agent says: "Your recovery is great, you have a free window at 14:00, do strength training, but remember you have dinner at 19:00 so don't go too hard."
 
 That's the difference between a dashboard and a coach.
 
 ## Architecture Reference
-
-For implementation details, here's the full architecture:
 
 ```
 Apple Watch → iPhone (Health app)
@@ -419,33 +374,13 @@ Health Auto Export JSON field names:
 - `respiratory_rate` — breathing rate
 - `apple_sleeping_wrist_temperature` — overnight wrist temp
 
-Storage: Each export is 500KB-5MB depending on metrics. At 3 exports/day, that's ~5-15MB/day. I keep 30 days and periodically clean up.
-
-## What's Next
-
-This is version 1. Here's what I want to add:
-
-**1. Trend analysis**
-Track HRV/HR over weeks, detect overtraining patterns before they become problems.
-
-**2. Workout logging**
-Log what I actually did, correlate with recovery. Did that padel session actually hurt my HRV? Let's see the data.
-
-**3. Nutrition integration**
-If I track food, add it to the morning briefing. "You ate late last night — that's why your deep sleep was low."
-
-**4. Multi-device support**
-Add data from gym equipment, running watch, whatever. More data, better coaching.
+Storage: each export is 500KB-5MB depending on metrics. At 3 exports/day, that's ~5-15MB/day. I keep 30 days and periodically clean up.
 
 ## Final Thoughts
 
 Generic tools give generic advice. An agent that knows your baselines, your calendar, and your training preferences gives you something specific. "Train at 14:00, strength, 45 minutes, you have dinner at 19:00 so wrap up by 15:30." That's not a dashboard. That's useful.
 
-I control the whole system. I can adjust baselines, rewrite prompts, add features. Whoop was a black box. This is a white box.
-
-$5 for the Health Auto Export app. An hour of setup. That's the total cost.
-
-The code is straightforward — a webhook, a couple of cron jobs, and a prompt. If you're running OpenClaw, you can set this up in an afternoon.
+I control the whole system. $5 and an hour. That's it.
 
 ---
 
