@@ -6,7 +6,7 @@ author: "Ihor Katkov"
 tags: [AI, health, agents, openclaw, autonomous-agents]
 ---
 
-**Time to implement:** 30–60 min · **Cost:** $5 one-time · **Stack:** OpenClaw, Apple Watch, Health Auto Export, Tailscale
+**⏱ 30–60 min to implement · 💵 $5 one-time · Stack: OpenClaw, Apple Watch, Health Auto Export, Tailscale**
 
 ---
 
@@ -18,42 +18,55 @@ Tuesday morning, Feb 12. My phone buzzes at 7:30 AM:
 😴 Sleep: 7.62h (deep 0.89h, REM 1.76h) ✅
 ❤️ Resting HR: 49 bpm (baseline 52) — excellent
 📊 HRV: 131 ms (baseline 120) — recovery above normal
-🩸 SpO2: 99%
 
 Recovery: 🟢 Excellent — good day for intensity
 
 📅 Today: Dutch lesson 12:00, WeFact 16:00, OpenClaw Builders 17:00
-🏋️ Training window: 14:00-15:30
-   Recommendation: strength training 45-60 min
+🏋️ Training window: 14:00-15:30 — strength training, 45–60 min
 ```
 
 I'm out of bed before I've opened anything else.
 
-This didn't come from Whoop. It came from an agent I built on top of my Apple Watch data — one that knows my calendar, my baselines, and my schedule.
+Think of it like code review. The diff is already there — the health data. What you need is something that understands the context: your baselines, your schedule, your goals. That's an AI agent.
 
-Think of it like code review. The diff is already there (the health data). What you need is something that understands the context — your baselines, your schedule, your goals — to tell you what it means and what to do. That's an AI agent.
-
----
-
-## Why this matters (if you're building products)
-
-This is a reference architecture for agentic product layers: **ingest → normalize → baseline → decide → notify.**
-
-The moat in this pattern isn't data collection — it's **proprietary context + personalized decisioning**. Wearables are already commoditized. The agent layer on top of them is not. And unlike a SaaS product, the context your agent accumulates about you compounds over time — it's yours, it's local, and no competitor can copy it.
-
-Whoop, Oura, Apple Health all give you dashboards. None of them know your calendar, your workload, or your goals. The interpretation layer — the thing that takes your data and maps it to your actual day — is wide open. That's the product.
-
-This post shows exactly how I built it, including the architecture, the prompts, and the pitfalls.
+A year earlier I'd have gotten a score from Whoop. But Whoop didn't know my calendar. It couldn't tell me *when* to train, only that I *could*.
 
 ---
 
-**Contents**
-- [Two Years With Whoop (and why I canceled)](#two-years-with-whoop)
+## Why this matters
+
+This is a reference architecture for agentic product layers:
+
+```
+┌─────────────────────────────────────────────────────┐
+│              AGENTIC LAYER PATTERN                   │
+│                                                      │
+│  Inputs      →  Interpretation  →  Actions          │
+│                                                      │
+│  sensors          baselines          schedule        │
+│  calendar    →    heuristics    →    meeting cut     │
+│  workload         context            intervention    │
+│                        ↑                             │
+│                   Feedback loop                      │
+│              "Did that help?" → learns               │
+└─────────────────────────────────────────────────────┘
+```
+
+The moat isn't data collection — it's **proprietary context + personalized decisioning**. Wearables are commoditized. The interpretation layer isn't. And unlike SaaS, the context your agent accumulates is yours, local, and compounds over time.
+
+The full autonomy ladder: **advise → draft plan → schedule → act → learn.** This post covers the first two rungs. The rest follow naturally as trust builds.
+
+---
+
+## Contents
+
+- [Two Years With Whoop](#two-years-with-whoop)
 - [The architecture](#the-architecture)
 - [Why OpenClaw](#why-openclaw)
-- [Setup: step by step](#setup-step-by-step)
+- [Setup](#setup)
 - [The prompts](#the-prompts)
-- [Comparison: Whoop vs the agent](#comparison)
+- [Comparison](#comparison)
+- [Founder lens](#founder-lens)
 - [Lessons learned](#lessons-learned)
 - [Where this goes next](#where-this-goes-next)
 - [Privacy & security](#privacy--security)
@@ -62,15 +75,13 @@ This post shows exactly how I built it, including the architecture, the prompts,
 
 ## Two Years With Whoop
 
-Whoop is a great product. I used it for two years and it taught me things about my body that I couldn't have learned otherwise.
+Whoop is a great product — I used it for two years and it taught me things about my body I couldn't have learned otherwise. That's exactly why I canceled it.
 
-The first two months I was obsessed — tracking diet, journaling workouts, chasing green recovery days. It felt like too much. But the data was teaching me counterintuitive things: walk more to recover, go to bed earlier, design gym routines that leave you better the *next* day, not wrecked. I never would have found those patterns on my own.
+The first two months I was obsessed. Chasing green recovery days, tracking diet, logging workouts. It felt like too much — but the data was teaching me counterintuitive things: walk more to recover, go to bed earlier, design a gym routine that leaves you better the *next* day. I never would have found those patterns alone.
 
-After two years, I'd distilled it to four rules: **sleep better, manage stress, actively restore, train.** Those rules are mine. I don't need the app to remind me of them.
+After two years, I had four rules: **sleep better, manage stress, actively restore, train.** Those are mine now. I don't need the app to remind me.
 
-So I canceled.
-
-What I couldn't replace was something Whoop never had: **active intelligence**. Whoop doesn't know my calendar. It gives me a score and a suggestion — but it can't say "your HRV is low *and* you have four meetings today, train tomorrow instead." Its journal tracks what happened. It doesn't proactively shape what happens next.
+What I couldn't replace was something Whoop never had: active intelligence. It doesn't know my calendar. It can't connect my HRV dip to my afternoon workload and suggest cutting a meeting. Its journal tracks what happened — it doesn't shape what happens next.
 
 That gap is the product.
 
@@ -78,251 +89,173 @@ That gap is the product.
 
 ## The Architecture
 
-Three components:
-
-**1. Data collection (automated)**
-Apple Watch → Health Auto Export → OpenClaw webhook → JSON files on disk
-
-**2. Morning briefing**
-Cron job at 7:30 AM → reads health data → checks calendar → generates recovery score + workout recommendation → Telegram
-
-**3. Stress sentinel**
-Heartbeat every 30 min → checks HR + HRV → alerts only when something is actually wrong
-
 ```
-Apple Watch → iPhone (Health app)
+Apple Watch → Health app
                 ↓
-    Health Auto Export (every 3h, automated)
+    Health Auto Export (every 3h)
                 ↓
         HTTP POST JSON
                 ↓
-    OpenClaw webhook (:8090) ← Tailscale / private network
+    OpenClaw webhook (:8090)   ← Tailscale / private only
                 ↓
-        JSON files (30-day retention)
+        JSON files on disk     ← 30-day retention
                 ↓
-    OpenClaw agent: parse + baseline + decide
+    OpenClaw agent             ← reads calendar + health
                 ↓
-    Morning briefing + stress alerts → Telegram
+    Morning briefing + alerts → Telegram
 ```
 
-The agent doesn't report numbers. It knows my calendar, my baselines, my preferences. Coaching, not dashboards.
+Three components:
+
+| Component | What it does |
+|---|---|
+| **Webhook server** | Receives Apple Watch data from Health Auto Export |
+| **Morning briefing** | Cron at 7:30 AM — recovery score + workout window |
+| **Stress sentinel** | Every 30 min — alerts only on combined HR spike + HRV drop |
 
 ---
 
 ## Why OpenClaw
 
-I could have built this with a cron script and a curl call to the Claude API. I didn't — and the difference matters.
+Most people build agents as stateless chat prompts. That's not an agent — it's autocomplete. Agents need loops, memory, and boundaries.
 
-**Stateful workspace** — OpenClaw agents have a persistent workspace. Health files, baselines, context — all accessible across sessions. No database setup, no state management code.
+OpenClaw gives you that:
 
-**Scheduling built-in** — morning briefing, stress sentinel, cleanup jobs are all first-class cron jobs in the config. I didn't write a scheduler.
+| Capability | Why it matters here |
+|---|---|
+| **Long-running processes with state** | Baselines, context, and history persist across sessions |
+| **Scheduled loops built-in** | Morning briefing and stress sentinel are first-class cron jobs |
+| **Composable concerns** | Briefing agent and sentinel are separate — different prompts, different schedules |
+| **Context fusion as workflow** | Calendar + health + email in one agent, one prompt |
+| **Local-first by default** | Nothing leaves your network unless you configure it to |
 
-**Connectors** — calendar (via `gog` CLI), Telegram, email are all connected to the same agent. The morning briefing crosses sources naturally: health + calendar + workload in one prompt.
-
-**Composable agents** — the briefing agent, stress sentinel, and cleanup agent are separate concerns. Each has its own prompt and schedule. No code required to compose them.
-
-**Memory as first-class concept** — baselines, user preferences, and learned patterns live in workspace files the agent can read and update. Persists across restarts.
-
-If you're building any kind of personal agent, OpenClaw is the platform — not a script host.
-
-**The intelligence flywheel.** Generic health products collect your data but know nothing else about you. OpenClaw agents accumulate proprietary context: your calendar patterns, your baseline trends, your past decisions, your communication style, your goals. That context compounds. The agent that's been running for three months knows you better than one running for a week — and no generic product can replicate that, because that data is yours and it lives locally.
-
-This is the moat that wearables can't copy. Not the sensors. The context.
+**The intelligence flywheel.** The longer this runs, the better it gets. Three months in, the agent has seen patterns in your data that you haven't noticed yet. No SaaS product can replicate that — because that data is yours, and it lives locally.
 
 ---
 
-## Setup: Step by Step
+## Setup
 
-### Prerequisites
+The full setup lives in the companion repo: **[github.com/ihorkatkov/health-agent](https://github.com/ihorkatkov/health-agent)**
 
-- Apple Watch (any recent model with HR/HRV tracking)
-- iPhone with [Health Auto Export](https://apps.apple.com/app/health-auto-export/id1115567461) ($5 one-time)
-- OpenClaw running in Docker ([bootstrap repo](https://github.com/ihorkatkov/openclaw-agent-bootstrap))
-- Tailscale on both iPhone and server
+The repo is written for agents, not humans. Point your OpenClaw agent at it:
 
-### Step 1: The Webhook Server
+> *"Set up the health agent from github.com/ihorkatkov/health-agent. Read AGENTS.md first, then follow CHECKLIST.md step by step. My Tailscale IP is [YOUR_IP]."*
 
-Create `workspace/health/webhook-server.js`:
+The agent reads the spec and applies it to your setup. No copy-pasting.
 
-```javascript
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+**What's in the repo:**
 
-const PORT = process.env.HEALTH_WEBHOOK_PORT || 8090;
-const DATA_DIR = path.join(__dirname, 'data');
-
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
-const server = http.createServer((req, res) => {
-  if (req.method === 'GET' && req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ status: 'ok', timestamp: new Date().toISOString() }));
-  }
-
-  if (req.method === 'POST' && (req.url === '/health-data' || req.url === '/api/data')) {
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', () => {
-      try {
-        const cleaned = body.replace(/^\uFEFF/, '').trim(); // Strip BOM
-        const data = JSON.parse(cleaned);
-        const ts = new Date().toISOString().replace(/[:.]/g, '-');
-        const filename = `health-${ts}.json`;
-        fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2));
-        const today = new Date().toISOString().slice(0, 10);
-        fs.appendFileSync(
-          path.join(DATA_DIR, `daily-${today}.jsonl`),
-          JSON.stringify({ received: new Date().toISOString(), ...data }) + '\n'
-        );
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ status: 'ok', file: filename }));
-      } catch (e) {
-        const ts = new Date().toISOString().replace(/[:.]/g, '-');
-        fs.writeFileSync(path.join(DATA_DIR, `raw-${ts}.txt`), body);
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON' }));
-      }
-    });
-    return;
-  }
-  res.writeHead(404);
-  res.end('Not found');
-});
-
-server.listen(PORT, '0.0.0.0', () => console.log(`Health webhook :${PORT}`));
-```
-
-> ⚠️ **Pitfall: BOM** — Health Auto Export sometimes prefixes JSON with a UTF-8 BOM character (`\uFEFF`). Without the strip, your webhook silently saves unparseable files. The `body.replace(/^\uFEFF/, '')` line handles it.
-
-Add to `docker-compose.yml`:
-
-```yaml
-ports:
-  - "8090:8090"
-command:
-  - sh
-  - -c
-  - |
-    /home/node/.openclaw/workspace/health/start-server.sh &
-    node dist/index.js gateway --bind lan --port 18789
-```
-
-### Step 2: Configure Health Auto Export
-
-Open app → **Automations** → **Add Automation**:
-- **URL**: `http://YOUR_TAILSCALE_IP:8090/health-data`
-- **Interval**: Every 3 hours
-- **Metrics**: HR, Resting HR, HRV, SpO2, Sleep Analysis, Respiratory Rate, Wrist Temperature, Step Count, Active Energy
-
-> ⚠️ **Pitfall: Apple Health lag** — HRV and resting HR are written to Apple Health with a 2-3 day delay in some configurations. Focus your morning briefing on sleep quality and wrist temperature, which export immediately. Use HRV for trend analysis, not daily decisions.
-
-### Step 3: Set Your Baselines
-
-Track for 1-2 weeks. Mine (from Whoop historical data):
-
-| Metric | My Baseline | Alert Threshold |
-|--------|-------------|-----------------|
-| Resting HR | 52 bpm | > 60 bpm |
-| HRV (SDNN) | 120 ms | < 80 ms |
-| SpO2 | 97% | < 95% |
-| Sleep | 7.5h | < 7h |
+| File | Purpose |
+|---|---|
+| `AGENTS.md` | Agent contract — how to read and execute |
+| `CHECKLIST.md` | Sequential setup steps |
+| `PROMPTS/morning-briefing.txt` | Ready-to-use cron prompt |
+| `PROMPTS/stress-sentinel.txt` | Sentinel prompt |
+| `TEMPLATES/webhook-server.js` | Webhook server (Node.js) |
+| `TEMPLATES/baselines.json` | Baselines template — edit with your values |
+| `TEMPLATES/retention-cron.sh` | 30-day cleanup script |
+| `TESTS/smoke-test.sh` | Post-setup verification |
+| `SECURITY.md` | Hardening guide |
 
 ---
 
 ## The Prompts
 
-### Morning Briefing
+The prompts are what make this a coach, not a dashboard.
 
+**Morning briefing** (excerpt from `PROMPTS/morning-briefing.txt`):
 ```
-MORNING BRIEFING. Do ALL of these:
+MORNING BRIEFING. Execute all sections:
 
-1. SLEEP & HEALTH: Read latest health data from workspace/health/data/
-   (find most recent health-*.json). Extract: sleep (totalSleep, deep, rem,
-   core, awake), resting_heart_rate, heart_rate_variability,
-   blood_oxygen_saturation, apple_sleeping_wrist_temperature.
-   Baselines: resting HR ~52 (alert >60), HRV ~120 (alert <80), sleep >7h.
+1. SLEEP & HEALTH: read latest health data, compare to baselines
+2. CALENDAR: check today's events
+3. RECOVERY SCORE: 🟢 Good / 🟡 Moderate / 🔴 Poor
+4. WORKOUT SUGGESTION: type + time window + duration
+5. ESSENTIALISM CHECK: if overloaded + poor recovery, name one thing to cut
 
-2. CALENDAR: Check today's events. List the schedule.
-
-3. RECOVERY SCORE: 🟢 Good / 🟡 Moderate / 🔴 Poor (rest day).
-
-4. WORKOUT SUGGESTION: Type + time window that fits calendar + duration.
-
-5. ESSENTIALISM CHECK: If calendar is overloaded + recovery is poor, say it.
-
-Be direct, personal, actionable.
+Be direct, personal, no filler.
 ```
 
-*Not medical advice — treat recovery scores as coaching heuristics. If metrics look consistently off, talk to a clinician.*
-
-### Stress Sentinel (heartbeat, every 30 min)
-
+**Stress sentinel** (excerpt from `PROMPTS/stress-sentinel.txt`):
 ```
-Daytime check — stress signals only:
-- Resting HR >60 = alert
-- HRV <80 = alert (only if also elevated HR)
-- No sleep stats during the day.
-If stress indicators are high: frame through essentialism —
-high stress = probably doing too much. Suggest one concrete action.
+If HR > threshold AND HRV < threshold: alert with one concrete suggestion.
+Otherwise: SENTINEL_OK (silent, no message).
 ```
+
+The sentinel is silent by default. That's intentional. No noise.
 
 ---
 
 ## Comparison
 
 | Feature | Whoop | Apple Watch + OpenClaw |
-|---------|-------|------------------------|
-| Recovery score | ✅ | ✅ (derived) |
+|---|---|---|
+| Recovery score | ✅ | ✅ derived |
 | Calendar-aware planning | ❌ | ✅ |
 | Proactive suggestions | Limited | ✅ |
 | Custom baselines | Partial | ✅ fully yours |
 | Email / workload context | ❌ | ✅ |
+| Intelligence flywheel | ❌ | ✅ compounds over time |
 | Data ownership | Vendor | You |
-| Cost | $30/mo | ~$5 one-time + compute |
+| Cost | $30/mo | ~$5 one-time |
+
+---
+
+## Founder Lens
+
+Why this is a product wedge:
+
+- **Data capture is commodity.** Apple Watch, Oura, Garmin — all collect the same signals. The hardware moat is gone.
+- **Context fusion is moat.** No wearable knows your calendar, your workload, your inbox. Only your personal agent does.
+- **Autonomy ladder drives retention.** Users who reach "advise" stay. Users who reach "schedule" become advocates.
+- **Local-first reduces compliance drag.** No HIPAA scope, no SOC 2, no data processor agreements. The data never leaves the user's machine.
+- **Agent templates become ecosystems.** Ship a spec repo like this one. Others fork it. The agent layer multiplies.
 
 ---
 
 ## Lessons Learned
 
-**Baselines are everything.** "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needs YOUR numbers.
+**Baselines are everything.** "HRV below 50 is bad" means nothing if your baseline is 80 vs 120. The agent needs your numbers.
 
 **Calendar integration makes the difference.** Whoop can't say "train at 14:00." My agent can.
 
-**Silence is golden.** The sentinel only alerts when something is actually wrong. No noise.
+**Silence is golden.** The sentinel only fires when something is actually wrong.
 
-**Case study — Wednesday that went wrong:** HRV 95 ms (below my baseline), back-to-back meetings. Agent suggested 20min mobility. I ignored it, played padel. Played poorly, felt exhausted. Lesson: the agent was right. I should have listened.
+> ⚠️ **Pitfall: BOM** — Health Auto Export sometimes prefixes JSON with a UTF-8 BOM (`\uFEFF`). Without stripping it, exports parse silently as invalid. The webhook template handles this.
+
+> ⚠️ **Pitfall: Apple Health lag** — HRV and resting HR write to Apple Health with a 2-3 day delay. Use sleep quality and wrist temperature for daily decisions; HRV for weekly trends.
+
+**Wednesday that went wrong:** HRV 95 ms (below baseline), packed calendar. Agent suggested mobility. I went to padel anyway. Played poorly. The agent was right.
 
 ---
 
 ## Where This Goes Next
 
-**Multi-signal fatigue** — 7-day HRV trend instead of single-point readings. Three consecutive days below baseline is a signal. One bad reading is noise.
+**Multi-signal fatigue model** — 7-day HRV trend instead of single readings. Three days below baseline is a signal; one bad night is noise.
 
-**Context fusion** — merge health with workload signals: calendar density, travel days, late meals. The agent already knows my calendar. Adding the rest makes the model richer.
+**Context fusion** — merge calendar density, travel days, late meals. The agent already knows the calendar. The rest follows.
 
-**Interventions library** — instead of "rest day", prescribe: 20min walk, sunlight before 9am, caffeine cutoff at 2pm, drop one meeting. Specific, not vague.
+**Interventions library** — instead of "rest day": 20min walk, sunlight before 9am, caffeine cutoff at 2pm, drop the 4pm meeting.
 
-**Feedback loop** — evening check-in: "did that help?" Over time the agent learns which interventions actually move my HRV.
+**Feedback loop** — evening check-in: "did that help?" The agent learns which interventions move your HRV.
 
-**Autonomy ladder** — advise → draft weekly training plan → schedule workouts → notify training partner. Each step opt-in, each step requires trust earned.
+**Autonomy ladder** — advise → draft weekly training plan → schedule workouts → notify training partner. Each step opt-in.
 
-The goal isn't automation. It's augmentation — an agent that knows me well enough to be right most of the time, and knows when to ask.
-
-The longer this runs, the better it gets. Three months from now my agent will have seen patterns in my data that I haven't noticed yet. Six months from now it will understand my rhythms better than any wearable ever could — because it has context no wearable can access. That's the flywheel. That's the product.
+The longer this runs, the better it gets. Six months from now this agent will know my rhythms better than any wearable — because it has context no wearable can access. That's the flywheel. That's the product.
 
 ---
 
 ## Privacy & Security
 
-Your health data is sensitive. Here's how this setup handles it:
+- **Private network only** — webhook runs behind Tailscale, not the public internet
+- **Encryption at rest** — enable full-disk encryption on your server
+- **30-day retention** — automated cleanup via `retention-cron.sh`
+- **What goes to the LLM** — parsed summaries, not raw JSON; no biometric dumps in messages
+- **Self-hosted option** — run Ollama locally and nothing leaves your machine
 
-- **Private network only** — the webhook runs behind Tailscale. Not exposed to the public internet. No cloud, no third-party storage.
-- **Encryption at rest** — enable full-disk encryption on your server (FileVault / LUKS). The JSON files contain real biometrics.
-- **30-day retention** — old exports are deleted automatically. Health history shouldn't accumulate indefinitely.
-- **What goes to the LLM** — parsed metrics (numbers, dates), not raw JSON dumps. Telegram briefings are summaries.
-- **What stays local** — all raw files, conversation history, baselines. Only the prompt reaches the LLM API.
-- **Self-hosted option** — run a local Ollama/Llama model and nothing leaves your machine at all.
+Full hardening guide: `SECURITY.md` in the repo.
+
+*Health disclaimer: recovery scores are coaching heuristics, not medical advice. If metrics look consistently off, talk to a clinician.*
 
 ---
 
@@ -330,7 +263,7 @@ Your health data is sensitive. Here's how this setup handles it:
 
 Whoop gave me the rules. My agent applies them.
 
-Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once those are internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday — your calendar, your dinner at 19:00, your four meetings.
+Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday — your calendar, your dinner at 19:00, your four meetings.
 
 That's not a subscription. That's an agent that knows you.
 
@@ -338,9 +271,10 @@ $5 and an hour. That's it.
 
 ---
 
-**Get the full setup:**
-→ [openclaw-agent-bootstrap](https://github.com/ihorkatkov/openclaw-agent-bootstrap) — docker-compose, webhook, cron prompts, Health Auto Export config, baselines template
-→ Built on [OpenClaw](https://github.com/openclaw/openclaw) — open-source agent framework
+**If you're building agentic products, steal this pattern.**  
+**If you're building OpenClaw workflows, fork the repo.**  
+**If you care about local-first autonomy, follow along — I'm shipping one component per week.**
 
-I'm building the agentic personal OS in public — one component per week.  
-Follow [@ihor_katkov](https://x.com/ihor_katkov) to catch the next build.
+→ [github.com/ihorkatkov/health-agent](https://github.com/ihorkatkov/health-agent) — agent-executable spec: webhook + prompts + baselines + retention + smoke tests  
+→ Built on [OpenClaw](https://github.com/openclaw/openclaw)  
+→ [@ihor_katkov](https://x.com/ihor_katkov) on X
