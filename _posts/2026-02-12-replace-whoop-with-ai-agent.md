@@ -3,7 +3,9 @@ layout: post
 title: "Dashboards Are Dead: I Built a Calendar-Aware Health Agent with OpenClaw"
 date: 2026-02-12
 author: "Ihor Katkov"
-tags: [AI, health, agents, openclaw, autonomous-agents]
+description: "How I replaced my Whoop subscription with an AI health agent using OpenClaw and Apple Watch — calendar-aware recovery coaching for $5."
+image: "" # TODO: add hero image before merge
+tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, health-automation, replace-whoop]
 ---
 
 **⏱ 30–60 min to implement · 💵 $5 one-time · Stack: OpenClaw, Apple Watch, Health Auto Export, Tailscale**
@@ -117,7 +119,7 @@ Three components:
 
 ## Why OpenClaw
 
-Most people build agents as stateless chat prompts. That's not an agent — it's autocomplete. Agents need loops, memory, and boundaries.
+Most people build agents as stateless chat prompts. That's not an agent — it's autocomplete. Agents need loops, memory, and boundaries. I wrote about why I built OpenClaw to solve exactly this in [The Lethal Trifecta and Why I Built OpenClaw](/2026/02/16/the-lethal-trifecta-and-why-i-built-openclaw).
 
 OpenClaw gives you that:
 
