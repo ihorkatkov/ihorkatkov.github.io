@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Dashboards Are Dead: I Built a Calendar-Aware Health Agent with OpenClaw"
+title: "Wearables Track. Agents Decide. I Built the Missing Context Layer with OpenClaw"
 date: 2026-02-12
 author: "Ihor Katkov"
-description: "How I replaced my Whoop subscription with an AI health agent using OpenClaw and Apple Watch — calendar-aware recovery coaching for $5."
+description: "How I connected Apple Watch health data to an AI agent that understands my calendar — and why dashboards were never the point."
 image: "" # TODO: add hero image before merge
 tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, health-automation, replace-whoop]
 ---
@@ -263,13 +263,13 @@ Full hardening guide: `SECURITY.md` in the repo.
 
 ## Final Thoughts
 
-Whoop gave me the rules. My agent applies them.
+Apple Watch tracks vitals. My agent decides what to do with them.
 
 Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday — your calendar, your dinner at 19:00, your four meetings.
 
-That's not a subscription. That's an agent that knows you.
+Dashboards show you what happened. Agents decide what to do next.
 
-$5 and an hour. That's it.
+An agent who knows you. $5 and an hour. That's it.
 
 ---
 
