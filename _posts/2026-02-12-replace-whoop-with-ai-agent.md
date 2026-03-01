@@ -4,7 +4,7 @@ title: "Wearables Track. Agents Decide. I Built the Missing Context Layer with O
 date: 2026-02-12
 author: "Ihor Katkov"
 description: "How I connected Apple Watch health data to an AI agent that understands my calendar — and why dashboards were never the point."
-image: "" # TODO: add hero image before merge
+image: "/assets/img/morning-briefing-telegram.jpg"
 tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, health-automation, replace-whoop]
 ---
 
@@ -14,18 +14,7 @@ tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, hea
 
 Tuesday morning, Feb 12. My phone buzzes at 7:30 AM:
 
-```
-🌅 Morning Briefing — Feb 12
-
-😴 Sleep: 7.62h (deep 0.89h, REM 1.76h) ✅
-❤️ Resting HR: 49 bpm (baseline 52) — excellent
-📊 HRV: 131 ms (baseline 120) — recovery above normal
-
-Recovery: 🟢 Excellent — good day for intensity
-
-📅 Today: Dutch lesson 12:00, WeFact 16:00, OpenClaw Builders 17:00
-🏋️ Training window: 14:00-15:30 — strength training, 45–60 min
-```
+![Morning briefing from Aris — Telegram notification on Feb 12](/assets/img/morning-briefing-telegram.jpg){: .mx-auto.d-block style="max-width: 420px; border-radius: 12px;"}
 
 I'm out of bed before I've opened anything else.
 
