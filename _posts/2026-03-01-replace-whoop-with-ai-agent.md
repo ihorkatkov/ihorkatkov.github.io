@@ -8,10 +8,6 @@ image: "/assets/img/morning-briefing-telegram.jpg"
 tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, health-automation, replace-whoop]
 ---
 
-**⏱ 30-60 min to implement · 💵 $5 one-time · Stack: OpenClaw, Apple Watch, Health Auto Export, Tailscale**
-
----
-
 Tuesday morning, Feb 12. My phone buzzes at 7:30 AM:
 
 ![Morning briefing from Aris - Telegram notification on Feb 12](/assets/img/morning-briefing-telegram.jpg)
@@ -92,7 +88,7 @@ If your calendar looks overloaded and your recovery is low, it tells you straigh
 
 Apple Watch tracks vitals. My agent decides what to do with them.
 
-Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday — your calendar, your dinner at 19:00, your four meetings.
+Two years of data distilled to four principles: sleep better, manage stress, actively restore, and train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday, your calendar, your dinner at 19:00, and your four meetings.
 
 Dashboards show you what happened. Agents decide what to do next.
 
