@@ -3,7 +3,7 @@ layout: post
 title: "Wearables Track. Agents Decide. I Built the Missing Context Layer with OpenClaw"
 date: 2026-03-01
 author: "Ihor Katkov"
-description: "How I connected Apple Watch health data to an AI agent that understands my calendar - and why dashboards were never the point."
+description: "How I connected Apple Watch health data to an AI agent that understands my calendar. Dashboards were never the point."
 image: "/assets/img/morning-briefing-telegram.jpg"
 tags: [ai-health-agent, autonomous-agents, apple-watch-automation, OpenClaw, health-automation, replace-whoop]
 ---
@@ -92,7 +92,7 @@ If your calendar looks overloaded and your recovery is low, it tells you straigh
 
 Apple Watch tracks vitals. My agent decides what to do with them.
 
-Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday — your calendar, your dinner at 19:00, your four meetings.
+Two years of data distilled to four principles: sleep better, manage stress, actively restore, train. Once internalized, you don't need the teacher. You need something that applies those rules to your actual Tuesday - your calendar, your dinner at 19:00, your four meetings.
 
 Dashboards show you what happened. Agents decide what to do next.
 
