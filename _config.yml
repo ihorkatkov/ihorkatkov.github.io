@@ -8,8 +8,8 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Ihor Katkov — founder building AI-native products. Angel investor. Founding Engineer at Neno. Previously: software agency, algorithmic trading. Featured by Google Cloud. Documenting the builder's journey at ihorkatkov.com.
-keywords: Founder | AI-native Products | Angel Investor | Building in Public | AI Agents | Amsterdam | Software Engineering
+  Ihor Katkov — builder and angel investor. Building AI-native products. Founding Engineer at Neno. Previously: software agency, algorithmic trading. Featured by Google Cloud. Documenting the process at ihorkatkov.com.
+keywords: Builder | AI-native Products | Angel Investor | Building in Public | AI Agents | Amsterdam | Software Engineering
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
