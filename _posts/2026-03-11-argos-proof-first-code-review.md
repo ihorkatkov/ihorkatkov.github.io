@@ -56,15 +56,13 @@ Seven eyes. Each one focused. Each one running simultaneously.
 
 ## The Proof Rule
 
-This is the part that actually matters.
-
 Hunters cannot just flag issues. They must write a failing test that proves the problem exists.
 
 Not a passing test. Not a description of what a test might look like. A test that, when you run it right now against the current codebase, fails — because the bug is real and the code doesn't handle it yet.
 
 No test = no finding. Auto-deleted.
 
-If a hunter can't write the failing test, the finding doesn't make it to the review. Full stop.
+If a hunter can't write the failing test, the finding doesn't make it to the review.
 
 This is the forcing function that eliminates hallucinations. You can't write a failing test for a bug that doesn't exist. The act of requiring a test proof filters out everything the model invented, because invented bugs don't produce test failures — they produce tests that pass, which Argos immediately discards.
 
@@ -95,7 +93,7 @@ First run: infinite thinking loop. Argos just... spun. No output. The model was 
 
 Cause: temperature 0.1.
 
-At low temperature, Gemini collapses into a single reasoning path it can't escape. It finds a direction, doubles down on it, and the extended thinking mode amplifies this into a loop. It keeps refining the same thought instead of terminating.
+At low temperature, Gemini collapses into a single reasoning path it can't escape. It finds a direction, commits to it hard, and the extended thinking mode amplifies this into a loop. It keeps refining the same thought instead of terminating.
 
 Fix: temperature 1.0.
 
@@ -137,4 +135,4 @@ The architecture is simple enough that it fits in a single agent config file and
 
 If you're running AI code review and you're not requiring the model to prove its findings, you're just adding noise to your process. More sophisticated noise than `# TODO: fix this`, but noise.
 
-Here's what I want to know: does the "proof test" requirement change how you think about using LLMs for other kinds of analysis? I'm starting to think the pattern generalizes beyond code review.
+Does the "proof test" requirement change how you think about using LLMs for other kinds of analysis? I'm starting to think the pattern generalizes beyond code review.
