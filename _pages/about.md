@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Building autonomous AI systems.
+subtitle: Founder building AI-native products. Angel investor.
 
 profile:
   align: right
@@ -30,11 +30,13 @@ latest_researches:
   limit: 5 # leave blank to include all the researches
 ---
 
-I build autonomous AI systems.
+I build AI-native products.
 
-As Founding Engineer at [Neno](https://neno.co) — Europe's first AI-powered financial services company — I own the full technical architecture: document processing pipelines, banking infrastructure, and AI agents that automate financial workflows for 26 million European SMEs.
+Founder and angel investor based in Amsterdam. Currently Founding Engineer at [Neno](https://neno.co) — Europe's first AI-powered financial services company — where I own the full technical architecture: document processing pipelines, banking infrastructure, and AI agents that automate financial workflows for European SMEs.
 
-Before Neno: engineering leadership, trading systems, fintech infrastructure. Nearly a decade building systems that handle money and can't afford to break.
+Before Neno: ran my own software agency, built algorithmic trading systems, engineered fintech infrastructure. Nearly a decade of building things that handle money and can't afford to break.
+
+I'm building more products. Documenting the process publicly — what works, what doesn't, what the next generation of software actually looks like.
 
 ## Featured & Community
 
