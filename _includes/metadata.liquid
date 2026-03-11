@@ -93,6 +93,44 @@
   {% endif %}
 {% endif %}
 
+{% if page.url == '/' and site.serve_schema_org %}
+  <!-- Person Schema for homepage — GEO optimization -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{ author_name }}",
+      "url": "{{ site.url }}",
+      "description": "Software engineer based in Amsterdam building autonomous AI systems. Founding Engineer at Neno.",
+      "jobTitle": "Founding Engineer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Neno",
+        "url": "https://neno.co"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Amsterdam",
+        "addressCountry": "NL"
+      },
+      "knowsAbout": [
+        "Autonomous AI Systems",
+        "AI Agents",
+        "Software Engineering",
+        "Financial Technology",
+        "Elixir",
+        "Machine Learning Operations"
+      ],
+      "sameAs": [
+        "https://twitter.com/ihor_katkov",
+        "https://github.com/ihorkatkov",
+        "https://linkedin.com/in/ihorkatkov",
+        "https://hackernoon.com/u/ihorkatkov"
+      ]
+    }
+  </script>
+{% endif %}
+
 {% if site.serve_schema_org %}
   <!-- Schema.org -->
   {% comment %} Social links generator for "sameAs schema" {% endcomment %}
