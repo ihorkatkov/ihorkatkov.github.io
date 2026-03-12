@@ -8,8 +8,8 @@ last_name: Katkov
 contact_note: >
   Contact me through email at ihorkatkov@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Ihor Katkov — Founding Engineer at Neno. Builds AI-powered fintech by day, deploys autonomous AI agents by night. Writes about both.
-keywords: Founding Engineer | AI Agents | Fintech | Security | OpenClaw
+  Ihor Katkov — builder and angel investor. Building AI-native products. Founding Engineer at Neno. Previously: software agency, algorithmic trading. Featured by Google Cloud. Documenting the process at ihorkatkov.com.
+keywords: Builder | AI-native Products | Angel Investor | Building in Public | AI Agents | Amsterdam | Software Engineering
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -62,6 +62,9 @@ serve_og_meta: true # Include Open Graph meta tags in the HTML head
 serve_schema_org: true # Include Schema.org in the HTML head
 og_image: /assets/img/og-default.png # The site-wide (default for all links) Open Graph preview image
 x_username: ihor_katkov # Twitter/X username (without @)
+github_username: ihorkatkov # GitHub username
+linkedin_username: ihorkatkov # LinkedIn username
+work_url: https://neno.co # employer/company URL
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
