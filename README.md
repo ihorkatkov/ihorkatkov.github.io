@@ -4,7 +4,7 @@
 
 <img src="assets/img/avatar.jpeg" alt="Profile Picture" width="200" style="border-radius: 50%"/>
 
-Check out my GitHub Pages at [ihorkatkov.github.io](https://ihorkatkov.github.io)
+Personal site: [ihorkatkov.com](https://www.ihorkatkov.com)
 
 ---
 
@@ -15,16 +15,17 @@ Check out my GitHub Pages at [ihorkatkov.github.io](https://ihorkatkov.github.io
 
 ## About Me
 
-Hey there. I’m Ihor, an AI-native product builder and software engineer with over a decade of experience in software development. I help founders, teams, and companies design, ship, and scale AI-native products, and advise on practical AI transformations.
+Hey there. I’m Ihor, an AI-native product builder and technical strategy advisor based in Amsterdam. I help founders, teams, and companies design, ship, and scale AI-native products, and advise on practical AI transformations.
 
 ## Current Work
 
-I'm a Founding Engineer at [Neno](https://neno.co), building AI-powered financial services for European SMEs.
+I'm a Founding Engineer at [Neno](https://neno.co), Europe's first AI-powered financial services company. I work on document processing pipelines, banking infrastructure, and AI agents that automate financial workflows for European SMEs.
 
 ## Research Interests / Expertise
 
 * AI-native products
-* AI agents
-* Fintech infrastructure
-* Software engineering
+* AI agents and agent infrastructure
+* AI transformation strategy
+* Fintech and banking infrastructure
+* Software architecture
 * Entrepreneurship
