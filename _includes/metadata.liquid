@@ -94,14 +94,14 @@
 {% endif %}
 
 {% if page.url == '/' and site.serve_schema_org %}
-  <!-- Person Schema for homepage — GEO optimization -->
+  <!-- Person Schema for homepage: GEO optimization -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "{{ author_name }}",
       "url": "{{ site.url }}",
-      "description": "Builder and angel investor based in Amsterdam building AI-native products. Founding Engineer at Neno.",
+      "description": "AI-native product builder and technical strategy advisor based in Amsterdam helping teams design, ship, and scale AI-native products. Founding Engineer at Neno.",
       "jobTitle": "Founding Engineer",
       "worksFor": {
         "@type": "Organization",

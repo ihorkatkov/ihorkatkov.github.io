@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Builder and angel investor.
+subtitle: AI-native product builder and technical strategy advisor.
 
 profile:
   align: right
@@ -30,18 +30,18 @@ latest_researches:
   limit: 5 # leave blank to include all the researches
 ---
 
-I build AI-native products and invest in early-stage startups.
+I help founders, teams, and companies design, ship, and scale AI-native products, and advise on practical AI transformations.
 
-Currently Founding Engineer at [Neno](https://neno.co) — Europe's first AI-powered financial services company — where I own the full technical architecture: document processing pipelines, banking infrastructure, and AI agents that automate financial workflows for European SMEs.
+Currently Founding Engineer at [Neno](https://neno.co), Europe's first AI-powered financial services company, where I own the full technical architecture: document processing pipelines, banking infrastructure, and AI agents that automate financial workflows for European SMEs.
 
 Before Neno: founded a software agency, built algorithmic trading systems, engineered fintech infrastructure. Nearly a decade of building things that handle money and can't afford to break.
 
-I'm building more products. Documenting the process publicly — what works, what doesn't, what the next generation of software actually looks like.
+I'm building more products. Documenting the process publicly: what works, what doesn't, what the next generation of software actually looks like.
 
 ## Featured & Community
 
-- **Featured by [Google Cloud](https://www.linkedin.com/posts/ihorkatkov_%F0%9D%98%8E%F0%9D%98%B0%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B4-%F0%9D%98%B1%F0%9D%98%B3%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%B3%F0%9D%98%A6%F0%9D%98%B4%F0%9D%98%B4-%F0%9D%98%B0%F0%9D%98%B7%F0%9D%98%A6%F0%9D%98%B3-activity-7394649225130639360-jtna)** — quoted on AI agent infrastructure at Google AI Agents event, Rotterdam
-- **Published on [HackerNoon](https://hackernoon.com/u/ihorkatkov)** — writing about AI agents and engineering
-- **Open source contributor** — AI agent tooling and infrastructure
-- **Mentor at PyLadies Hackathon** — MLOps Open Source Sprint
-- **Follow me on [Twitter @ihor_katkov](https://twitter.com/ihor_katkov)** — building in public
+- **Featured by [Google Cloud](https://www.linkedin.com/posts/ihorkatkov_%F0%9D%98%8E%F0%9D%98%B0%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B4-%F0%9D%98%B1%F0%9D%98%B3%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%B3%F0%9D%98%A6%F0%9D%98%B4%F0%9D%98%B4-%F0%9D%98%B0%F0%9D%98%B7%F0%9D%98%A6%F0%9D%98%B3-activity-7394649225130639360-jtna)**: quoted on AI agent infrastructure at Google AI Agents event, Rotterdam
+- **Published on [HackerNoon](https://hackernoon.com/u/ihorkatkov)**: writing about AI agents and engineering
+- **Open source contributor**: AI agent tooling and infrastructure
+- **Mentor at PyLadies Hackathon**: MLOps Open Source Sprint
+- **Follow me on [Twitter @ihor_katkov](https://twitter.com/ihor_katkov)**: building in public
