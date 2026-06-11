@@ -38,6 +38,8 @@ Before Neno: founded a software agency, built algorithmic trading systems, engin
 
 I'm building more products. Documenting the process publicly: what works, what doesn't, what the next generation of software actually looks like.
 
+Occasionally available for advisory engagements and technical strategy sprints. If you're building something AI-native and want a second brain on architecture or technical direction, [email me](mailto:ihorkatkov@gmail.com). Tell me what you're building and where it hurts.
+
 ## Featured & Community
 
 - **Featured by [Google Cloud](https://www.linkedin.com/posts/ihorkatkov_%F0%9D%98%8E%F0%9D%98%B0%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B4-%F0%9D%98%B1%F0%9D%98%B3%F0%9D%98%B0%F0%9D%98%A8%F0%9D%98%B3%F0%9D%98%A6%F0%9D%98%B4%F0%9D%98%B4-%F0%9D%98%B0%F0%9D%98%B7%F0%9D%98%A6%F0%9D%98%B3-activity-7394649225130639360-jtna)**: quoted on AI agent infrastructure at Google AI Agents event, Rotterdam
