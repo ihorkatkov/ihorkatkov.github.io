@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /researches/
-title: researches
+title: research
 nav: true
 nav_order: 2
 description: >
@@ -11,7 +11,7 @@ description: >
 
 <div class="post">
   <div class="header-bar">
-    <h1>Researches</h1>
+    <h1>Research</h1>
     <h2>{{ page.description }}</h2>
   </div>
 
